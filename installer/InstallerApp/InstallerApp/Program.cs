@@ -12,6 +12,7 @@
             {
                 // Directorio base del repositorio (donde se encuentra el ejecutable del instalador)
                 string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                Console.WriteLine(baseDirectory);
 
                 // Directorio del entorno virtual
                 string venvPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "myenv");
@@ -87,8 +88,11 @@
                 // Añadir al PATH
                 AddToPath(installDir);
 
+                // Final bueno
                 Console.WriteLine("\nInstalación completada con exito!\n");
                 Exito();
+                Console.WriteLine("\nPresiona cualquier tecla para salir...");
+                Console.ReadKey();
             }
             catch (Exception ex)
             {
