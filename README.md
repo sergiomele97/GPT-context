@@ -1,1 +1,1 @@
-Herramienta destinada a agilizar la interacción con CHATGPT u otras IA's.
+Herramienta destinada a agilizar la interacción con CHATGPT u otras IA's. 
