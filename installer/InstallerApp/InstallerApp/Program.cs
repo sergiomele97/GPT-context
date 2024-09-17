@@ -36,6 +36,9 @@
                     Console.WriteLine("Python ya está instalado.");
                 }
 
+                // Verificar y añadir Python al PATH si no está presente
+                AddPythonToPath();
+
                 // Crear entorno virtual si no existe
                 if (!Directory.Exists(venvPath))
                 {
@@ -192,6 +195,43 @@
             }
         }
 
+        static void AddPythonToPath()
+        {
+            string pythonPath = GetPythonInstallPath();
+
+            if (pythonPath != null)
+            {
+                AddToPath(pythonPath);
+                Console.WriteLine("Python añadido al PATH.");
+            }
+            else
+            {
+                Console.WriteLine("No se pudo determinar la ruta de instalación de Python.");
+            }
+        }
+
+        static string GetPythonInstallPath()
+        {
+            // Intenta encontrar la ruta de instalación de Python
+            string[] possiblePaths =
+            {
+                @"C:\Python39", // Cambia esto a la versión y ruta de Python que estás instalando
+                @"C:\Program Files\Python39",
+                @"C:\Program Files (x86)\Python39",
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Python39")
+            };
+
+            foreach (var path in possiblePaths)
+            {
+                if (Directory.Exists(path))
+                {
+                    return path;
+                }
+            }
+
+            return null;
+        }
+
         static bool IsPythonInstalled()
         {
             try
@@ -240,62 +280,7 @@
 
         static void Exito()
         {
-            Console.WriteLine("_________________________________¶¶¶¶");
-            Console.WriteLine("________________________¶¶¶¶____¶¶¶¶11¶");
-            Console.WriteLine("________________________¶¶1¶¶_¶¶¶¶1111¶");
-            Console.WriteLine("_______________________¶¶111¶¶¶1111111¶");
-            Console.WriteLine("___________________¶¶¶_¶1111¶¶1111111¶");
-            Console.WriteLine("___________________¶11¶¶111¶¶111111¶¶");
-            Console.WriteLine("___________________¶11¶1111¶111111¶¶");
-            Console.WriteLine("__________________¶¶11¶111¶111111¶¶");
-            Console.WriteLine("__________________¶11¶111¶¶111111¶");
-            Console.WriteLine("__________________¶11¶111¶1111111¶");
-            Console.WriteLine("_________________¶11¶111¶11111111¶");
-            Console.WriteLine("_________________¶1¶111¶¶1111111¶¶");
-            Console.WriteLine("________________¶1¶¶111¶1111111¶¶");
-            Console.WriteLine("_______________¶¶1¶111¶1111111¶¶");
-            Console.WriteLine("_______________¶¶¶111¶11111111¶");
-            Console.WriteLine("______________¶¶¶11¶¶111111111¶");
-            Console.WriteLine("______________¶¶11¶¶111111¶¶¶1¶¶");
-            Console.WriteLine("_____________¶11¶¶1111111¶111111¶¶");
-            Console.WriteLine("___________¶¶¶¶¶1111111¶¶11111111¶¶¶");
-            Console.WriteLine("__________¶¶¶1111111¶¶1111111111111¶¶¶");
-            Console.WriteLine("_________¶¶111111¶¶¶11111111111111111¶¶¶¶");
-            Console.WriteLine("_________¶111111¶¶1111111111111111111111¶¶¶");
-            Console.WriteLine("_________¶111111¶1111111111¶¶¶1111111111111¶");
-            Console.WriteLine("________¶11111111111111111¶¶_¶¶¶¶¶¶¶¶111111¶");
-            Console.WriteLine("_______¶¶111111111111111¶¶¶________¶111111¶¶");
-            Console.WriteLine("_______¶11111111111¶¶¶¶¶¶__________¶111111¶");
-            Console.WriteLine("______¶¶11111111111¶¶_____________¶¶11111¶¶");
-            Console.WriteLine("______¶111111111111¶______________¶¶11111¶");
-            Console.WriteLine("_____¶¶111111111111¶________________¶¶¶¶¶¶¶¶¶¶¶¶");
-            Console.WriteLine("_____¶1111111111111¶________________¶¶¶111111¶¶¶¶");
-            Console.WriteLine("_____¶1111111111111¶¶_____________¶¶¶111111¶¶¶11¶");
-            Console.WriteLine("____¶¶1111111111111¶¶¶_________¶¶¶1111111¶¶11111¶");
-            Console.WriteLine("____¶1111111111111111¶¶¶¶¶¶¶¶¶¶¶111111111¶1111¶¶");
-            Console.WriteLine("____¶111111111111111111¶¶¶¶11111111111111¶¶¶¶¶¶");
-            Console.WriteLine("___¶111111111111111111111111111111111111111¶¶¶");
-            Console.WriteLine("__¶111111111111111111111111111111111111111¶¶");
-            Console.WriteLine("¶¶11111111111111111111111111111111111111¶¶¶");
-            Console.WriteLine("111111111111111111111111111111111¶¶¶¶¶¶¶¶");
-            Console.WriteLine("111111111111111111111111111111¶¶¶¶");
-            Console.WriteLine("1111111111111111111111111111¶¶¶");
-            Console.WriteLine("111111111111111111111111111¶¶");
-            Console.WriteLine("1111111111111111111111111¶¶");
-            Console.WriteLine("111111111111111111111111¶¶");
-            Console.WriteLine("1111111111111111111111¶¶");
-            Console.WriteLine("111111111111111111111¶¶");
-            Console.WriteLine("1111111111111111111¶¶");
-            Console.WriteLine("111111111111111111¶¶");
-            Console.WriteLine("1111111111111111¶¶");
-            Console.WriteLine("11111111111111¶¶");
-            Console.WriteLine("111111111111¶¶");
-            Console.WriteLine("1111111111¶¶");
-            Console.WriteLine("11111111¶¶");
-            Console.WriteLine("111111¶¶");
-            Console.WriteLine("1111¶¶");
-            Console.WriteLine("11¶¶");
-            Console.WriteLine("¶¶");
+            Console.WriteLine("¡Instalación completada con éxito!");
         }
     }
 }
