@@ -1,14 +1,16 @@
-# GPT-Context Installer
+# Installation Guide from Terminal
 
-This is a tool designed to optimize and standardize interaction with CHATGPT and other AIs.
+Follow these steps to install GPT-Context directly from the terminal:
 
-## Installation
+1. **Open Command Prompt** (cmd) on Windows.
 
-1. **Double-click** on the executable called `GPT-context-installer.exe` located in the root directory.
-   
-2. Once the installation is complete, **open your terminal** and type `context`.
+2. **Execute the following commands**:
 
-3. If you receive a message explaining the available commands, the installation was successful!
+   ```cmd
+   git clone https://github.com/sergiomele97/GPT-context.git
 
----
+   cd GPT-context
 
+   GPT-context-installer.exe
+
+**Nota:** Si no tienes git puedes: o instalarlo, o descargar el zip en el botón verde de github, descomprimirlo y ejecutar GPT-context-installer.exe como administrador
