@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
+    using System.Net;
 
     class Program
     {
@@ -23,6 +24,17 @@
                 // Ruta del directorio de instalación
                 string installDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "GPT-context");
                 Console.WriteLine($"Directorio de instalación: {installDir}");
+
+                // Verificar si Python está instalado
+                if (!IsPythonInstalled())
+                {
+                    Console.WriteLine("Python no está instalado. Descargando e instalando Python...");
+                    InstallPython();
+                }
+                else
+                {
+                    Console.WriteLine("Python ya está instalado.");
+                }
 
                 // Crear entorno virtual si no existe
                 if (!Directory.Exists(venvPath))
@@ -89,7 +101,7 @@
                 AddToPath(installDir);
 
                 // Final bueno
-                Console.WriteLine("\nInstalación completada con exito!\n");
+                Console.WriteLine("\nInstalación completada con éxito!\n");
                 Exito();
                 Console.WriteLine("\nPresiona cualquier tecla para salir...");
                 Console.ReadKey();
@@ -164,7 +176,6 @@
             }
         }
 
-
         static void AddToPath(string folderPath)
         {
             Console.WriteLine($"Añadiendo {folderPath} al PATH");
@@ -179,6 +190,52 @@
             {
                 Console.WriteLine($"El directorio ya está en el PATH: {folderPath}");
             }
+        }
+
+        static bool IsPythonInstalled()
+        {
+            try
+            {
+                // Ejecutar un comando simple de Python para verificar si está instalado
+                RunCommand("python", "--version");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        static void InstallPython()
+        {
+            string pythonInstallerUrl = "https://www.python.org/ftp/python/3.12.6/python-3.12.6-amd64.exe"; // URL de la versión de Python que deseas instalar
+            string installerPath = Path.Combine(Path.GetTempPath(), "python_installer.exe");
+
+            Console.WriteLine("Descargando el instalador de Python...");
+            using (WebClient client = new WebClient())
+            {
+                client.DownloadFile(pythonInstallerUrl, installerPath);
+            }
+
+            Console.WriteLine("Instalando Python...");
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = installerPath,
+                Arguments = "/quiet InstallAllUsers=1 PrependPath=1",
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(startInfo))
+            {
+                process.WaitForExit();
+                if (process.ExitCode != 0)
+                {
+                    throw new Exception("Error al instalar Python.");
+                }
+            }
+
+            Console.WriteLine("Python instalado correctamente.");
         }
 
         static void Exito()
@@ -242,3 +299,4 @@
         }
     }
 }
+
