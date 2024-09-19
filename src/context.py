@@ -2,9 +2,11 @@ import argparse
 import api_key_config  # Asegúrate de que este módulo esté disponible
 import init
 import add
+import context_tools
 
 
 def main():
+
     parser = argparse.ArgumentParser(description="Context management tool.")
     subparsers = parser.add_subparsers(dest='command')
 
@@ -20,6 +22,7 @@ def main():
     subparsers.add_parser('config', help='Configure API key.')
 
     args = parser.parse_args()
+
 
     if args.command == 'init':
         init.init_context_repo()

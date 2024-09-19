@@ -1,11 +1,16 @@
 import os
 import json
+import context_tools
 
 
 def init_context_repo():
-    """Initializes a new context repository in the current directory."""
-    repo_path = os.getcwd()  # Use the current directory
-    context_dir = os.path.join(repo_path, '.context')
+    """Initializes a new context repository in the nearest .context directory or in the current directory."""
+    # Find the .context directory
+    context_dir = context_tools.find_context_repo(os.getcwd())
+
+    if context_dir is None:
+        # No .context directory found, create one in the current directory
+        context_dir = os.path.join(os.getcwd(), '.context')
 
     if os.path.exists(context_dir):
         print(f"The context repository already exists in {context_dir}.")
@@ -23,3 +28,7 @@ def init_context_repo():
         print(f"Context repository initialized in {context_dir}.")
     except Exception as e:
         print(f"Error initializing repository: {e}")
+
+
+if __name__ == "__main__":
+    init_context_repo()

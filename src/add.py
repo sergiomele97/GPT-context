@@ -29,3 +29,4 @@ def add_context(prompt, response):
         print(f"Context added to {context_file}.")
     except Exception as e:
         print(f"Error adding context: {e}")
+
