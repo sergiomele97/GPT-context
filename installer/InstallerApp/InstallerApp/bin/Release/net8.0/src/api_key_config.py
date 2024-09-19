@@ -18,8 +18,6 @@ def execute():
       print("\n" + "*" * 40)
       print("   ✅ API Key has been configured successfully! ✅")
       print("*" * 40 + "\n")
-      print("RECOMENDATION: To avoid your api going public, remember to add your context_config.json to your gitignore!!!")
-      print("Just add the line: **/context_config.json")
       break  # Exit loop if API call was successful
     except Exception as e:
       print(f"We encountered an error while trying to use your API key: {e}")

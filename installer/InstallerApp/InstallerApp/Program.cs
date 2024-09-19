@@ -48,6 +48,7 @@
                     ActivateAndRunCommand(venvPath, "python -m ensurepip");
                     Console.WriteLine("Instalando PyInstaller...");
                     ActivateAndRunCommand(venvPath, "pip install pyinstaller");
+                    ActivateAndRunCommand(venvPath, "pip install google-generativeai");
                 }
                 else
                 {
@@ -78,7 +79,7 @@
                 }
 
                 Console.WriteLine("Generando ejecutable con PyInstaller...");
-                ActivateAndRunCommand(venvPath, $"pyinstaller --onefile \"{scriptPath}\"");
+                ActivateAndRunCommand(venvPath, $"pyinstaller --onefile --hidden-import=google.generativeai {scriptPath}");
 
                 // Verificar si el archivo ejecutable ha sido creado
                 string exePath = Path.Combine(distDir, "context.exe");
@@ -148,8 +149,14 @@
         static void ActivateAndRunCommand(string venvPath, string arguments)
         {
             Console.WriteLine($"Activando entorno virtual y ejecutando: {arguments}");
+            Console.WriteLine("Esto puede llevar 1-2 minutos");
 
             string activateScript = Path.Combine(venvPath, "Scripts", "activate.bat");
+            if (!File.Exists(activateScript))
+            {
+                throw new FileNotFoundException("El script de activación del entorno virtual no se encontró.", activateScript);
+            }
+
             string command = $"/c \"{activateScript} && {arguments}\"";
 
             ProcessStartInfo startInfo = new ProcessStartInfo
@@ -162,22 +169,62 @@
                 CreateNoWindow = true
             };
 
-            using (Process process = Process.Start(startInfo))
+            try
             {
-                string output = process.StandardOutput.ReadToEnd();
-                string error = process.StandardError.ReadToEnd();
-                process.WaitForExit();
-
-                Console.WriteLine($"Salida: {output}");
-                if (!string.IsNullOrEmpty(error))
+                using (Process process = Process.Start(startInfo))
                 {
-                    Console.WriteLine($"Error: {error}");
-                    // throw new Exception($"Error al ejecutar el comando: {error}");
-                }
+                    if (process == null)
+                    {
+                        throw new Exception("No se pudo iniciar el proceso.");
+                    }
 
-                Console.WriteLine($"Código de salida: {process.ExitCode}");
+                    // Captura de errores
+                    Task errorTask = Task.Run(() =>
+                    {
+                        string error;
+                        while ((error = process.StandardError.ReadLine()) != null)
+                        {
+                            // Mostrar errores críticos solo
+                            if (error.Contains("ERROR") || error.Contains("Exception") || error.Contains("failed"))
+                            {
+                                Console.WriteLine($"Error: {error}");
+                            }
+                        }
+                    });
+
+                    // Captura de salida (solo se imprime el mensaje final)
+                    Task outputTask = Task.Run(() =>
+                    {
+                        string output;
+                        while ((output = process.StandardOutput.ReadLine()) != null)
+                        {
+                            // Opcional: Puedes comentar esta línea si no quieres mostrar la salida
+                            // Si es necesario, puedes agregar lógica aquí para filtrar la salida
+                        }
+                    });
+
+                    process.WaitForExit();
+                    errorTask.Wait();
+                    outputTask.Wait();
+
+                    if (process.ExitCode != 0)
+                    {
+                        Console.WriteLine($"El comando terminó con código de salida: {process.ExitCode}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("El comando se completó con éxito.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al ejecutar el comando: {ex.Message}");
             }
         }
+
+
+
 
         static void AddToPath(string folderPath)
         {
@@ -206,7 +253,7 @@
             }
             else
             {
-                Console.WriteLine("No se pudo determinar la ruta de instalación de Python.");
+                Console.WriteLine("Python ya está añadido al PATH");
             }
         }
 
