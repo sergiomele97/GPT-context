@@ -16,7 +16,6 @@ def main():
     # Command 'add'
     add_parser = subparsers.add_parser('add', help='Add a new context to the repository.')
     add_parser.add_argument('prompt', help='The prompt for the context.')
-    add_parser.add_argument('response', help='The response for the context.')
 
     # Command 'config' for configuring API key
     subparsers.add_parser('config', help='Configure API key.')
@@ -27,7 +26,7 @@ def main():
     if args.command == 'init':
         init.init_context_repo()
     elif args.command == 'add':
-        add.add_context(args.prompt, args.response)
+        add.add_context(args.prompt)
     elif args.command == 'config':
         api_key_config.execute()  # Call the API key config function
     else:

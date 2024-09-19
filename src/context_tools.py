@@ -1,5 +1,5 @@
 import os
-
+import sys
 
 def find_context_repo(start_path):
     """Find the nearest .context directory starting from start_path and moving up the directory tree."""
@@ -12,3 +12,10 @@ def find_context_repo(start_path):
         current_path = os.path.dirname(current_path)
 
     return None
+
+def context_not_found(start_path):
+    print(f".context directory not found starting from {start_path}")
+
+    print("\nUse 'context init' to initialize a context repository")
+
+    sys.exit(0)

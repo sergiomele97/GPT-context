@@ -30,9 +30,9 @@ def configure_api_key():
   # Find the .context directory
   context_dir = context_tools.find_context_repo(os.getcwd())
 
-  if context_dir is None:
-    print("Error: .context directory not found.")
-    return None
+  if not context_dir:
+    context_tools.context_not_found(os.getcwd())
+    return
 
   # Define the path for the configuration file
   config_file_path = os.path.join(context_dir, 'context_config.json')
@@ -53,9 +53,9 @@ def load_api_key():
   # Find the .context directory
   context_dir = context_tools.find_context_repo(os.getcwd())
 
-  if context_dir is None:
-    print("Error: .context directory not found.")
-    return None
+  if not context_dir:
+    context_tools.context_not_found(os.getcwd())
+    return
 
   # Define the path for the configuration file
   config_file_path = os.path.join(context_dir, 'context_config.json')

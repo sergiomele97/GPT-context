@@ -1,32 +1,64 @@
-import datetime
 import os
-import json
+import uuid
+from datetime import datetime
+import gemini
+import context_tools
 
 
-def add_context(prompt, response):
-    """Adds a new context to the repository."""
-    repo_path = os.getcwd()  # Use the current directory
-    context_dir = os.path.join(repo_path, '.context')
-    context_file = os.path.join(context_dir, 'context.json')
+def generate_summary(start_path):
+    """Genera un resumen compacto de la estructura de directorios desde start_path."""
+    summary = []
 
-    try:
-        if not os.path.exists(context_dir):
-            raise FileNotFoundError(f"The context directory does not exist in {context_dir}")
+    for root, dirs, files in os.walk(start_path):
+        level = root.replace(start_path, '').count(os.sep)
+        indent = ' ' * 2 * level  # Ajusta la indentación según sea necesario
 
-        with open(context_file, 'r') as f:
-            context_data = json.load(f)
+        if files or dirs:  # Solo añade directorios con archivos o subdirectorios
+            formatted_root = f"{indent}{os.path.basename(root)}/"
+            sub_items = []
 
-        context_data.append({
-            "name": f"Prompt {len(context_data) + 1}",
-            "prompt": prompt,
-            "response": response,
-            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        })
+            # Formatea archivos
+            if files:
+                file_list = ','.join(files)
+                sub_items.append(f"({file_list})")
 
-        with open(context_file, 'w') as f:
-            json.dump(context_data, f, indent=4)
+            # Formatea subdirectorios
+            if dirs:
+                sub_items.extend(f"{d}/" for d in dirs)
 
-        print(f"Context added to {context_file}.")
-    except Exception as e:
-        print(f"Error adding context: {e}")
+            if sub_items:
+                summary.append(f"{formatted_root}{', '.join(sub_items)}")
+
+    summary_text = '\n'.join(summary)
+
+    return summary_text
+
+def add_context(prompt):
+    # 1. Encuentra el directorio padre
+    start_path = os.getcwd()
+    context_dir = context_tools.find_context_repo(start_path)
+
+    if not context_dir:
+        context_tools.context_not_found(start_path)
+        return
+
+    parent_dir = os.path.dirname(context_dir)
+
+    # 2. Genera resumen de directorios
+    summary = generate_summary(parent_dir)
+
+    # 3. Genera un JSON con un identificador único, el prompt, el resumen y la datetime actual.
+
+    context_data = {
+        'id': str(uuid.uuid4()),  # Genera un ID único con uuid
+        'prompt': prompt,
+        'summary': summary,
+        'timestamp': datetime.now().isoformat()  # Fecha y hora actual en formato ISO
+    }
+
+    # 4. Mandar prompt a gemini para que lo resuma
+    print(gemini.summarize(context_data))
+
+if __name__ == "__main__":
+    add_context("Quiero añadir un nuevo comando a la aplicación")
 
