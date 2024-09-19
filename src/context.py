@@ -1,93 +1,81 @@
+import datetime
 import os
 import argparse
+import json
 
-def init_context_repo(repo_path):
-    """Inicializa un nuevo repositorio de contexto."""
+
+def init_context_repo():
+    """Initializes a new context repository in the current directory."""
+    repo_path = os.getcwd()  # Use the current directory
     context_dir = os.path.join(repo_path, '.context')
+
     if os.path.exists(context_dir):
-        print(f"El repositorio de contexto ya existe en {context_dir}.")
+        print(f"The context repository already exists in {context_dir}.")
         return
 
     try:
-        # Crear el directorio del repositorio y subdirectorios
-        os.makedirs(os.path.join(context_dir, 'history'), exist_ok=True)
-        with open(os.path.join(context_dir, 'current_context.txt'), 'w') as f:
-            f.write("")
+        # Create the repository directory and subdirectories
+        os.makedirs(context_dir, exist_ok=True)
 
-        print(f"Repositorio de contexto inicializado en {context_dir}.")
+        # Create the context file with an initial empty list
+        context_file = os.path.join(context_dir, 'context.json')
+        with open(context_file, 'w') as f:
+            json.dump([], f)
+
+        print(f"Context repository initialized in {context_dir}.")
     except Exception as e:
-        print(f"Error al inicializar el repositorio: {e}")
+        print(f"Error initializing repository: {e}")
 
-def add_context(repo_path):
-    """Agrega la estructura de directorios actual al repositorio de contexto."""
+
+def add_context(prompt, response):
+    """Adds a new context to the repository."""
+    repo_path = os.getcwd()  # Use the current directory
     context_dir = os.path.join(repo_path, '.context')
-    context_file = os.path.join(context_dir, 'current_context.txt')
-    new_context = generate_compact_directory_structure(os.getcwd())
-    
+    context_file = os.path.join(context_dir, 'context.json')
+
     try:
         if not os.path.exists(context_dir):
-            raise FileNotFoundError(f"El directorio de contexto no existe en {context_dir}")
-        
-        with open(context_file, 'w') as f:
-            f.write(new_context)
-        
-        # Guardar en el historial
-        history_path = os.path.join(context_dir, 'history', 'context_history.txt')
-        with open(history_path, 'a') as f:
-            f.write(new_context + "\n---\n")
-        
-        print(f"Contexto agregado a {context_file}.")
-    except Exception as e:
-        print(f"Error al agregar el contexto: {e}")
+            raise FileNotFoundError(f"The context directory does not exist in {context_dir}")
 
-def generate_compact_directory_structure(root_dir):
-    """Genera una representación compacta de la estructura de directorios."""
-    def list_compact_dir_structure(directory):
-        structure = ""
-        try:
-            items = sorted(os.listdir(directory))
-            if items:
-                structure += f"{os.path.basename(directory)}: "
-                contents = []
-                for item in items:
-                    path = os.path.join(directory, item)
-                    if os.path.isdir(path):
-                        contents.append(f"{list_compact_dir_structure(path)}")
-                    else:
-                        contents.append(item)
-                structure += "(" + ", ".join(contents) + ")"
-        except PermissionError:
-            structure += "[Acceso Denegado]"
-        except Exception as e:
-            structure += f"[Error: {e}]"
-        return structure
-    
-    return list_compact_dir_structure(root_dir)
+        with open(context_file, 'r') as f:
+            context_data = json.load(f)
+
+        context_data.append({
+            "name": f"Prompt {len(context_data) + 1}",
+            "prompt": prompt,
+            "response": response,
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        })
+
+        with open(context_file, 'w') as f:
+            json.dump(context_data, f, indent=4)
+
+        print(f"Context added to {context_file}.")
+    except Exception as e:
+        print(f"Error adding context: {e}")
+
 
 def main():
-    parser = argparse.ArgumentParser(description="Herramienta de gestión de contexto.")
+    parser = argparse.ArgumentParser(description="Context management tool.")
     subparsers = parser.add_subparsers(dest='command')
 
-    # Comando 'init'
-    init_parser = subparsers.add_parser('init', help='Inicializa un nuevo repositorio de contexto.')
-    init_parser.add_argument('path', help='Ruta al directorio del repositorio.')
+    # Command 'init'
+    subparsers.add_parser('init', help='Initialize a new context repository.')
 
-    # Comando 'add'
-    add_parser = subparsers.add_parser('add', help='Agrega el contexto actual al repositorio.')
-    add_parser.add_argument('--all', action='store_true', help='Agregar todo el contexto.')
+    # Command 'add'
+    add_parser = subparsers.add_parser('add', help='Add a new context to the repository.')
+    add_parser.add_argument('prompt', help='The prompt for the context.')
+    add_parser.add_argument('response', help='The response for the context.')
 
     args = parser.parse_args()
 
-    # La ruta del repositorio se construye correctamente aquí
-    repo_path = args.path if args.command == 'init' else os.path.join(os.getcwd(), '.context')
-
     if args.command == 'init':
-        init_context_repo(repo_path)
+        init_context_repo()
     elif args.command == 'add':
-        if args.all:
-            add_context(os.path.dirname(repo_path))
+        add_context(args.prompt, args.response)
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()
