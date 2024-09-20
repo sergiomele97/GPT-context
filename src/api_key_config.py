@@ -1,7 +1,7 @@
 import google.generativeai as genai
 import json
 import os
-import context_tools
+import directory
 
 def execute():
   api_key = load_api_key()
@@ -28,10 +28,10 @@ def execute():
 def configure_api_key():
   """Prompts the user to enter the API key and saves it to the configuration file."""
   # Find the .context directory
-  context_dir = context_tools.find_context_repo(os.getcwd())
+  context_dir = directory.find_context_repo(os.getcwd())
 
   if not context_dir:
-    context_tools.context_not_found(os.getcwd())
+    directory.context_not_found(os.getcwd())
     return
 
   # Define the path for the configuration file
@@ -51,10 +51,10 @@ def configure_api_key():
 def load_api_key():
   """Loads the API key from the configuration file."""
   # Find the .context directory
-  context_dir = context_tools.find_context_repo(os.getcwd())
+  context_dir = directory.find_context_repo(os.getcwd())
 
   if not context_dir:
-    context_tools.context_not_found(os.getcwd())
+    directory.context_not_found(os.getcwd())
     return
 
   # Define the path for the configuration file

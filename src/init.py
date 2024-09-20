@@ -1,12 +1,12 @@
 import os
 import json
-import context_tools
+import directory
 
 
 def init_context_repo():
     """Initializes a new context repository in the nearest .context directory or in the current directory."""
     # Find the .context directory
-    context_dir = context_tools.find_context_repo(os.getcwd())
+    context_dir = directory.find_context_repo(os.getcwd())
 
     if context_dir is None:
         # No .context directory found, create one in the current directory
