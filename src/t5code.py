@@ -9,14 +9,9 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(device)
 
-print("Versión de PyTorch:", torch.__version__)         # Verifica la versión de PyTorch
 print("¿CUDA disponible?:", torch.cuda.is_available())  # Debería devolver True si la GPU está disponible
-
 if torch.cuda.is_available():
-    print("ID del dispositivo actual:", torch.cuda.current_device()) # Imprime el ID del dispositivo actual
     print("Nombre de la GPU:", torch.cuda.get_device_name(0)) # Imprime el nombre de la GPU
-else:
-    print("CUDA no está disponible o no se ha instalado correctamente.")
 
 def resumir_codigo(ruta_archivo):
     # Lee el contenido del archivo
