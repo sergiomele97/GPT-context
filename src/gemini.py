@@ -1,5 +1,3 @@
-from multiprocessing.connection import answer_challenge
-
 import google.generativeai as genai
 import api_key_config
 import time
@@ -40,7 +38,7 @@ def send_until_json(prompt):
 
 
 def choose_files(prompt):
-    rules = 'Tu respuesta debe ser unicamente un JSON, no escribas nada de texto, no escribas comillas antes y despues ni escribas json. Quiero que me ayudes a añadir funcionalidades en este proyecto. Devuelveme únicamente un json con una lista con el nombre de los archivos que consideras que necesitas ver para tener la mayor información posible para responder a posteriores preguntas de como seguir desarrollando código en este proyecto. Utiliza siempre ruta absoluta desde el directorio raiz que te mando.'
+    rules = 'Tu respuesta debe ser unicamente un JSON, no escribas nada de texto, no escribas comillas antes y despues ni escribas json. Quiero que me ayudes a añadir funcionalidades en este proyecto. Devuelveme únicamente un json con una lista con el nombre de los archivos que consideras que necesitas ver para tener la mayor información posible para responder a posteriores preguntas de como seguir desarrollando código en este proyecto. El resumen que te mando es desde un directorio raiz, ES MUY IMPORTANTE QUE todas las rutas que me devuelvas deben comenzar desde ese directorio.'
     finalprompt = prompt + rules
 
     return send_until_json(finalprompt)
