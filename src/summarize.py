@@ -1,13 +1,14 @@
 import os
 
-from src.syntax import python_syntax
+from src import language
+from syntax import python_syntax
 
 
 def read_code_files(directory):
     code_files = []
     for root, _, files in os.walk(directory):
         for file in files:
-            if file.endswith(('.py', '.js', '.java')):  # Cambia según tus necesidades
+            if file.endswith(('.py', '.js', '.cs')):  # Cambia según tus necesidades
                 file_path = os.path.join(root, file)
                 with open(file_path, 'r', encoding='utf-8') as f:
                     code_files.append((file_path, f.read()))
@@ -17,7 +18,7 @@ def read_code_files(directory):
 def generate_summary(code_files):
     summary = []
     for file_path, code in code_files:
-        classes, functions = python_syntax.extract_functions_and_classes(code)
+        classes, functions = language.extract_info(file_path, code)
         summary.append((file_path, classes, functions))
     return summary
 
