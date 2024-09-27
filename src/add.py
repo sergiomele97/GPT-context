@@ -4,6 +4,8 @@ from datetime import datetime
 import gemini
 import directory
 
+class prueba:
+    numero = 1
 
 def add_context(prompt):
 
