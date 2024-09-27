@@ -23,13 +23,13 @@ def generate_summary(code_files):
     return summary
 
 
-def generate_project_context(directory, project_description):
-    print(f"Generando contexto para el proyecto en: {directory}")
+def generate_project_context(directory):
+    print(f"Generando contexto para el proyecto a partir del directorio {directory}")
     code_files = read_code_files(directory)
     summary = generate_summary(code_files)
 
     context = f"### Contexto del Proyecto\n"
-    context += f"**Descripción del Proyecto:** {project_description}\n\n"
+
 
     # Optimización de la estructura de archivos
     context += f"**Te paso la estructura de archivos del proyecto con sus funciones (parámetros) -> salidas:**\n"
@@ -65,10 +65,8 @@ def generate_project_context(directory, project_description):
 
 if __name__ == "__main__":
     directory = r"C:\Work\3-GPT-context\src"  # Cambia a la ruta del directorio de tu proyecto
-    project_description = "Este proyecto es una aplicación para resumir y analizar código."  # Cambia esta descripción según tu proyecto
-    project_context = generate_project_context(directory, project_description)
 
-    # Controlar el tamaño del contexto
-    print("### Contexto Generado ###")
+    project_context = generate_project_context(directory)
     print(project_context)
+    # Controlar el tamaño del contexto
     print(f"\nNúmero de tokens estimados: {len(project_context.split())}")  # Aproximación de tokens

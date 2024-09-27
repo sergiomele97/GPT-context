@@ -1,6 +1,6 @@
 import re
 
-def extraer_clases_y_funciones(codigo_csharp):
+def extract_functions_and_classes(codigo_csharp):
 
     # --------------------------------------------------------------------------------------------------- Parámetros
 
@@ -9,6 +9,7 @@ def extraer_clases_y_funciones(codigo_csharp):
     # ---REGEX---------
     regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)'
     regex_funciones = r'(public|private|protected|internal)\s+[A-Za-z_][A-Za-z0-9_<>]*\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)'
+    regex_return = r'return\s+([^;]+);?'  # Capturar el valor después del 'return'
 
     # ---OUTPUT--------
     clases_y_funciones = {}
@@ -52,14 +53,14 @@ def extraer_clases_y_funciones(codigo_csharp):
                 funcion_con_parametros['return'] = "" # Inicializar retorno
                 funciones_globales.append(funcion_con_parametros)
 
-        # ------------------------------------ Buscar return
-        if 'return ' in linea:
-            # Obtener la línea de retorno
-            retorno = linea.strip().split('return ')[-1].strip().rstrip(';')
+        # ------------------------------------ Buscar return usando regex
+        retorno = re.search(regex_return, linea)
+        if retorno:
+            valor_retorno = retorno.group(1).strip()
             if funcion_con_parametros:
-                if funcion_con_parametros['return'] is None:
+                if funcion_con_parametros['return'] == "None":
                     funcion_con_parametros['return'] = ""
-                funcion_con_parametros['return'] += retorno
+                funcion_con_parametros['return'] += valor_retorno
 
         # Si las llaves llegan a 0, salimos de la clase
         if llaves_abiertas == 0:
@@ -105,7 +106,8 @@ public int Multiply(int x, int y) {
 """  # Código C# que deseas analizar
 
 # Llamamos a la función y obtenemos los resultados
-resultado = extraer_clases_y_funciones(codigo_csharp)
+clases_info, funciones_info  = extract_functions_and_classes(codigo_csharp)
 
 # Mostramos los resultados
-print(resultado)
+print(clases_info)
+print(funciones_info)

@@ -6,6 +6,8 @@ import directory
 
 class prueba:
     numero = 1
+    def add(a,b):
+        return a + b
 
 def add_context(prompt):
 

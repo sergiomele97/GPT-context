@@ -2,6 +2,29 @@ using BackendEstadistica.SignalR;
 
 namespace BackendEstadistica;
 
+public class Test {
+    public int Add(int a, int b) {
+        return a + b;
+    }
+
+    public void PrintHello() {
+        Console.WriteLine("Hello World");
+        return;  // No tiene valor de retorno
+    }
+}
+
+public class AnotherClass {
+    public string GetName() {
+        return "MyName";
+    }
+
+    private void Log(string message) {
+        if(a = 1){ return false}
+        else(){return True}
+        Console.WriteLine(message);
+    }
+}
+
 public class Program
 {
     public static void Main(string[] args)
