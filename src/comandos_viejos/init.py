@@ -1,6 +1,6 @@
 import os
 import json
-import directory
+from src.comandos_viejos import directory
 
 
 def init_context_repo():

@@ -75,39 +75,40 @@ def extract_functions_and_classes(codigo_csharp):
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
-codigo_csharp = """
-public class Test {
-    public int Add(int a, int b) {
-        return a + b;
+if __name__ == "__main__":
+    codigo_csharp = """
+    public class Test {
+        public int Add(int a, int b) {
+            return a + b;
+        }
+    
+        public void PrintHello() {
+            Console.WriteLine("Hello World");
+            return;  // No tiene valor de retorno
+        }
     }
-
-    public void PrintHello() {
-        Console.WriteLine("Hello World");
-        return;  // No tiene valor de retorno
+    
+    public class AnotherClass {
+        public string GetName() {
+            return "MyName";
+        }
+    
+        private void Log(string message) {
+            if(a = 1){ return false}
+            else(){return True}
+            Console.WriteLine(message);
+        }
     }
-}
-
-public class AnotherClass {
-    public string GetName() {
-        return "MyName";
+    
+    // Esta es una función global
+    public int Multiply(int x, int y) {
+        return x * y;
     }
+    """  # Código C# que deseas analizar
 
-    private void Log(string message) {
-        if(a = 1){ return false}
-        else(){return True}
-        Console.WriteLine(message);
-    }
-}
+    # Llamamos a la función y obtenemos los resultados
+    clases_info, funciones_info  = extract_functions_and_classes(codigo_csharp)
 
-// Esta es una función global
-public int Multiply(int x, int y) {
-    return x * y;
-}
-"""  # Código C# que deseas analizar
-
-# Llamamos a la función y obtenemos los resultados
-clases_info, funciones_info  = extract_functions_and_classes(codigo_csharp)
-
-# Mostramos los resultados
-print(clases_info)
-print(funciones_info)
+    # Mostramos los resultados
+    print(clases_info)
+    print(funciones_info)

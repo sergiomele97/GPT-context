@@ -3,7 +3,7 @@ import api_key_config
 import time
 import json
 import os
-import directory
+from src.comandos_viejos import directory
 
 
 def send(prompt):

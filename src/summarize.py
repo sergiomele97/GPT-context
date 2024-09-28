@@ -1,7 +1,6 @@
 import os
 
-from src import language
-from syntax import python_syntax
+import language
 
 
 def read_code_files(directory):

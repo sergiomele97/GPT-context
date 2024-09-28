@@ -1,7 +1,8 @@
 import google.generativeai as genai
 import json
 import os
-import directory
+from src.comandos_viejos import directory
+
 
 def execute():
   api_key = load_api_key()

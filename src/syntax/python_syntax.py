@@ -43,29 +43,29 @@ def extract_function_info(node, code):
 # Test de la función
 if __name__ == "__main__":
     code_sample = """
-class Test:
-    def add(self, a, b):
-        return a + b
-
-    def print_hello():
-        print("Hello World")
-        return  # No tiene valor de retorno
-
-class AnotherClass:
-    def get_name():
-        return "MyName"
-
-    def log(message):
-        if a == 1:
-            return False
-        else:
-            return True
-        print(message)
-
-# Esta es una función global
-def multiply(x, y):
-    return x * y
-
-    """
+    class Test:
+        def add(self, a, b):
+            return a + b
+    
+        def print_hello():
+            print("Hello World")
+            return  # No tiene valor de retorno
+    
+    class AnotherClass:
+        def get_name():
+            return "MyName"
+    
+        def log(message):
+            if a == 1:
+                return False
+            else:
+                return True
+            print(message)
+    
+    # Esta es una función global
+    def multiply(x, y):
+        return x * y
+    
+        """
 
     classes_info, functions_info = extract_functions_and_classes(code_sample)
