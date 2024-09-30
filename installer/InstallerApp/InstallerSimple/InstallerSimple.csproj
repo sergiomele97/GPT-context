@@ -8,7 +8,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <PublishSingleFile>true</PublishSingleFile> <!-- Habilitar publicación de un solo archivo -->
     <SelfContained>true</SelfContained> <!-- Aplicación independiente -->
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier> <!-- Especifica el SO y la arquitectura -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PlatformTarget>AnyCPU</PlatformTarget> <!-- Especifica el SO y la arquitectura -->
   </PropertyGroup>
 
   <ItemGroup>

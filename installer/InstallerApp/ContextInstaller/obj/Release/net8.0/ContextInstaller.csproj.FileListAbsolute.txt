@@ -1,0 +1,15 @@
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\bin\Release\net8.0\ContextInstaller.exe
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\bin\Release\net8.0\ContextInstaller.deps.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\bin\Release\net8.0\ContextInstaller.runtimeconfig.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\bin\Release\net8.0\ContextInstaller.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\bin\Release\net8.0\ContextInstaller.pdb
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\ContextInstaller.GeneratedMSBuildEditorConfig.editorconfig
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\ContextInstaller.AssemblyInfoInputs.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\ContextInstaller.AssemblyInfo.cs
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\ContextInstaller.csproj.CoreCompileInputs.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\ContextInstaller.sourcelink.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\ContextInstaller.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\refint\ContextInstaller.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\ContextInstaller.pdb
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\ContextInstaller.genruntimeconfig.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\ref\ContextInstaller.dll

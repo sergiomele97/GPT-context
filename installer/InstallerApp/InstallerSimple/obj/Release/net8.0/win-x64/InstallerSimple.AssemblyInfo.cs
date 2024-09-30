@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InstallerSimple")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+941b1d51198c916b34ae9c6b3f5f92b944b356ab")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+542d2be74c39d3af5b7c570df65e501e58d55f41")]
 [assembly: System.Reflection.AssemblyProductAttribute("InstallerSimple")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InstallerSimple")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
