@@ -7,10 +7,12 @@ def extract_info(codigo_perl):
     regex_paquetes = r'package\s+([A-Za-z_][A-Za-z0-9_]*)'
     regex_subrutinas = r'sub\s+([A-Za-z_][A-Za-z0-9_]*)\s*\{'
     regex_return = r'return\s+([^;]+);?'  # Capturar el valor después del 'return'
+    regex_imports = r'use\s+([A-Za-z_][A-Za-z0-9_:]*)'  # Capturar imports
 
     # ---OUTPUT--------
     paquetes_y_subrutinas = {}
     subrutinas_globales = []
+    imports_info = []
 
     # ---VARIABLES-----
     paquete_actual = None
@@ -22,6 +24,12 @@ def extract_info(codigo_perl):
 
     for linea in lineas:
         llaves_abiertas += linea.count('{') - linea.count('}')
+
+        # ----------------------------------- Buscar imports
+        importacion = re.search(regex_imports, linea)
+        if importacion:
+            imports_info.append(importacion.group(1).strip())
+            continue
 
         # ----------------------------------- Buscar paquetes (similar a clases)
         paquete = re.search(regex_paquetes, linea)
@@ -62,13 +70,16 @@ def extract_info(codigo_perl):
                      for paquete, subrutinas in paquetes_y_subrutinas.items()}
     subrutinas_info = [{'name': f['name'], 'return': f['return']} for f in subrutinas_globales]
 
-    return paquetes_info, subrutinas_info
+    return imports_info, paquetes_info, subrutinas_info
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
     # Código Perl de ejemplo
     codigo_perl = """
+    use strict;
+    use warnings;
+
     package Test;
 
     sub add {
@@ -102,15 +113,18 @@ if __name__ == "__main__":
     """  # Código Perl que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    paquetes_info, subrutinas_info = extract_info(codigo_perl)
+    imports_info, paquetes_info, subrutinas_info = extract_info(codigo_perl)
 
     # Mostramos los resultados
+    print("Imports encontrados:")
+    print(imports_info)
     print("Paquetes y subrutinas encontradas:")
     print(paquetes_info)
     print("Subrutinas globales encontradas:")
     print(subrutinas_info)
 
     # Definir la salida esperada
+    salida_esperada_imports = ['strict', 'warnings']
     salida_esperada_paquetes = {
         'Test': [
             {'name': 'add', 'return': '$a + $b'},
@@ -127,7 +141,7 @@ if __name__ == "__main__":
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada
-    if paquetes_info == salida_esperada_paquetes and subrutinas_info == salida_esperada_globales:
+    if imports_info == salida_esperada_imports and paquetes_info == salida_esperada_paquetes and subrutinas_info == salida_esperada_globales:
         print("Prueba exitosa: Los resultados son los esperados.")
     else:
         print("Prueba fallida: Los resultados no coinciden con lo esperado.")

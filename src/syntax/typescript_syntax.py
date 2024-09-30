@@ -4,6 +4,7 @@ def extract_info(codigo_typescript):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
+    regex_imports = r'import\s+.*?from\s+["\'](.*?)["\']'  # Captura declaraciones de importación
     regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)'
     regex_funciones_clase = r'([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*:\s*([A-Za-z_][A-Za-z0-9_]*)?\s*\{'
     regex_funciones_globales = r'function\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*:\s*([A-Za-z_][A-Za-z0-9_]*)?\s*\{'
@@ -13,6 +14,7 @@ def extract_info(codigo_typescript):
     regex_control_blocks = r'\b(if|else|for|while|switch|catch|try|finally)\b'
 
     # ---OUTPUT--------
+    imports_info = []  # Lista para almacenar los imports
     clases_y_funciones = {}
     funciones_globales = []
 
@@ -27,6 +29,12 @@ def extract_info(codigo_typescript):
     for linea in lineas:
         # Actualizar el contador de llaves abiertas
         llaves_abiertas += linea.count('{') - linea.count('}')
+
+        # Buscar imports
+        importacion = re.search(regex_imports, linea)
+        if importacion:
+            imports_info.append(importacion.group(0))  # Agregar la línea de importación a la lista
+            continue
 
         # Ignorar bloques de control como if, else, for, etc.
         if re.search(regex_control_blocks, linea):
@@ -92,13 +100,16 @@ def extract_info(codigo_typescript):
                    for clase, funciones in clases_y_funciones.items()}
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
 
-    return clases_info, funciones_info
+    return imports_info, clases_info, funciones_info  # Devolver imports, clases y funciones
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
     # Código TypeScript a analizar
     codigo_typescript = """
+    import { Test } from './test';
+    import * as Utils from './utils';
+
     class Test {
         add(a: number, b: number): number {
             return a + b;
@@ -132,15 +143,22 @@ if __name__ == "__main__":
     """  # Código TypeScript que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info = extract_info(codigo_typescript)
+    imports_info, clases_info, funciones_info = extract_info(codigo_typescript)
 
     # Mostramos los resultados
+    print("Imports encontrados:")
+    print(imports_info)
     print("Clases y funciones encontradas:")
     print(clases_info)
     print("Funciones globales encontradas:")
     print(funciones_info)
 
     # Definir la salida esperada
+    salida_esperada_imports = [
+        "import { Test } from './test';",
+        "import * as Utils from './utils';"
+    ]
+
     salida_esperada_clases = {
         'Test': [
             {'name': 'add', 'params': ['a', 'b'], 'return': 'number'},
@@ -158,7 +176,7 @@ if __name__ == "__main__":
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada
-    if clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
+    if imports_info == salida_esperada_imports and clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
         print("Prueba exitosa: Los resultados son los esperados.")
     else:
         print("Prueba fallida: Los resultados no coinciden con lo esperado.")

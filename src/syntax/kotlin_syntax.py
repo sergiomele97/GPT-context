@@ -1,14 +1,17 @@
 import re
 
+
 def extract_info(codigo_kotlin):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
+    regex_imports = r'import\s+([A-Za-z0-9_.]+)'  # Capturar declaraciones de import
     regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)'
     regex_funciones = r'fun\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*(:\s*[A-Za-z_][A-Za-z0-9_]*)?\s*{'
     regex_return = r'return\s+([^;]+);?'  # Capturar el valor después del 'return'
 
     # ---OUTPUT--------
+    imports_info = []  # Para almacenar los imports
     clases_y_funciones = {}
     funciones_globales = []
 
@@ -21,6 +24,12 @@ def extract_info(codigo_kotlin):
     lineas = codigo_kotlin.splitlines()
 
     for linea in lineas:
+        # ----------------------------------- Buscar imports
+        import_declaracion = re.search(regex_imports, linea)
+        if import_declaracion:
+            imports_info.append(import_declaracion.group(1).strip())
+            continue
+
         llaves_abiertas += linea.count('{') - linea.count('}')
 
         # ----------------------------------- Buscar clases
@@ -64,13 +73,16 @@ def extract_info(codigo_kotlin):
                    for clase, funciones in clases_y_funciones.items()}
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
 
-    return clases_info, funciones_info
+    return imports_info, clases_info, funciones_info
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
     # Código Kotlin de ejemplo
     codigo_kotlin = """
+    import kotlin.io.*
+    import kotlin.collections.*
+
     class Test {
         fun add(a: Int, b: Int): Int {
             return a + b
@@ -101,15 +113,22 @@ if __name__ == "__main__":
     """  # Código Kotlin que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info = extract_info(codigo_kotlin)
+    imports_info, clases_info, funciones_info = extract_info(codigo_kotlin)
 
     # Mostramos los resultados
+    print("Imports encontrados:")
+    print(imports_info)
     print("Clases y funciones encontradas:")
     print(clases_info)
     print("Funciones globales encontradas:")
     print(funciones_info)
 
     # Definir la salida esperada
+    salida_esperada_imports = [
+        'kotlin.io.*',
+        'kotlin.collections.*'
+    ]
+
     salida_esperada_clases = {
         'Test': [
             {'name': 'add', 'params': ['a: Int', 'b: Int'], 'return': 'a + b'},
@@ -126,7 +145,7 @@ if __name__ == "__main__":
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada
-    if clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
+    if imports_info == salida_esperada_imports and clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
         print("Prueba exitosa: Los resultados son los esperados.")
     else:
         print("Prueba fallida: Los resultados no coinciden con lo esperado.")

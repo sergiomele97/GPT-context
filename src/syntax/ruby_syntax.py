@@ -1,9 +1,11 @@
 import re
 
+
 def extract_info(codigo_ruby):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
+    regex_imports = r'^\s*require\s+["\']([^"\']+)["\']'  # Captura los imports
     regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)'
     regex_funciones_clase = r'^\s*def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)'  # Captura función dentro de clase
     regex_funciones_globales = r'^\s*def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)'  # Captura función global
@@ -12,6 +14,7 @@ def extract_info(codigo_ruby):
     # ---OUTPUT--------
     clases_y_funciones = {}
     funciones_globales = []
+    imports_info = []  # Lista para almacenar los imports
 
     # ---VARIABLES-----
     clase_actual = None
@@ -21,6 +24,12 @@ def extract_info(codigo_ruby):
 
     for linea in lineas:
         linea = linea.strip()  # Limpiar espacios en blanco al inicio y al final
+
+        # ----------------------------------- Buscar imports
+        import_match = re.search(regex_imports, linea)
+        if import_match:
+            imports_info.append(import_match.group(1))  # Agregar el import a la lista
+            continue
 
         # ----------------------------------- Buscar clases
         clase = re.search(regex_clases, linea)
@@ -72,12 +81,14 @@ def extract_info(codigo_ruby):
                    for clase, funciones in clases_y_funciones.items()}
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
 
-    return clases_info, funciones_info
+    return imports_info, clases_info, funciones_info
+
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
     # Código Ruby que deseas analizar
     codigo_ruby = """
+    require 'some_library'
     class Test
         def add(a, b)
             return a + b
@@ -112,15 +123,19 @@ if __name__ == "__main__":
     """  # Código Ruby que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info = extract_info(codigo_ruby)
+    imports_info, clases_info, funciones_info = extract_info(codigo_ruby)
 
     # Mostramos los resultados
+    print("Imports encontrados:")
+    print(imports_info)
     print("Clases y funciones encontradas:")
     print(clases_info)
     print("Funciones globales encontradas:")
     print(funciones_info)
 
     # Definir la salida esperada
+    salida_esperada_imports = ['some_library']
+
     salida_esperada_clases = {
         'Test': [
             {'name': 'add', 'params': ['a', 'b'], 'return': 'a + b'},
@@ -137,7 +152,7 @@ if __name__ == "__main__":
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada
-    if clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
+    if imports_info == salida_esperada_imports and clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
         print("Prueba exitosa: Los resultados son los esperados.")
     else:
         print("Prueba fallida: Los resultados no coinciden con lo esperado.")

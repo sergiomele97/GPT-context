@@ -1,9 +1,11 @@
 import re
 
+
 def extract_info(codigo_rust):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
+    regex_imports = r'^\s*use\s+([A-Za-z0-9_::]+);'  # Regex para capturar imports
     regex_structs = r'struct\s+([A-Za-z_][A-Za-z0-9_]*)'
     regex_funciones = r'(?:pub\s+)?fn\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*(->\s*([A-Za-z_][A-Za-z0-9_<>]*))?'
     regex_return = r'return\s+([^;]+);'  # Capturar el valor después del 'return'
@@ -11,6 +13,7 @@ def extract_info(codigo_rust):
     # ---OUTPUT--------
     structs_y_funciones = {}
     funciones_globales = []
+    imports_info = []  # Lista para almacenar los imports
 
     # ---VARIABLES-----
     struct_actual = None
@@ -22,6 +25,12 @@ def extract_info(codigo_rust):
     lineas = codigo_rust.splitlines()
 
     for linea in lineas:
+        # Buscar imports
+        importacion = re.search(regex_imports, linea)
+        if importacion:
+            imports_info.append(importacion.group(1))
+            continue  # Ir a la siguiente línea
+
         llaves_abiertas += linea.count('{') - linea.count('}')
 
         # ----------------------------------- Detectar el comienzo de un impl para un struct
@@ -68,16 +77,19 @@ def extract_info(codigo_rust):
 
     # --- Formatear la salida en el formato requerido
     structs_info = {struct: [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones]
-                   for struct, funciones in structs_y_funciones.items()}
+                    for struct, funciones in structs_y_funciones.items()}
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
 
-    return structs_info, funciones_info
+    return imports_info, structs_info, funciones_info  # Devolvemos también imports_info
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
     # Código Rust que deseas analizar
     codigo_rust = """
+    use std::vec;
+    use std::fmt;
+
     struct Test;
 
     impl Test {
@@ -113,15 +125,22 @@ if __name__ == "__main__":
     """
 
     # Llamamos a la función y obtenemos los resultados
-    structs_info, funciones_info = extract_info(codigo_rust)
+    imports_info, structs_info, funciones_info = extract_info(codigo_rust)
 
     # Mostramos los resultados
+    print("Imports encontrados:")
+    print(imports_info)
     print("Structs y funciones encontradas:")
     print(structs_info)
     print("Funciones globales encontradas:")
     print(funciones_info)
 
     # Definir la salida esperada
+    salida_esperada_imports = [
+        'std::vec',
+        'std::fmt'
+    ]
+
     salida_esperada_structs = {
         'Test': [
             {'name': 'add', 'params': ['a: i32', 'b: i32'], 'return': 'a + b'},
@@ -138,7 +157,7 @@ if __name__ == "__main__":
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada
-    if structs_info == salida_esperada_structs and funciones_info == salida_esperada_globales:
+    if imports_info == salida_esperada_imports and structs_info == salida_esperada_structs and funciones_info == salida_esperada_globales:
         print("Prueba exitosa: Los resultados son los esperados.")
     else:
         print("Prueba fallida: Los resultados no coinciden con lo esperado.")

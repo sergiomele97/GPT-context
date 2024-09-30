@@ -1,15 +1,16 @@
 import re
 
-
 def extract_info(codigo_swift):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
+    regex_imports = r'import\s+(\w+)'  # Detecta un import en Swift
     regex_clases = r'class\s+(\w+)'  # Detecta una clase en Swift
     regex_funciones = r'func\s+(\w+)\s*\((.*?)\)\s*(->\s*(\w+))?\s*{'  # Detecta una función en Swift
     regex_return = r'return\s+(.*?)(;|$)'  # Detecta un retorno en una función
 
     # ---OUTPUT--------
+    imports_info = []  # Inicializar lista de imports
     clases_y_funciones = {}
     funciones_globales = []
 
@@ -21,6 +22,12 @@ def extract_info(codigo_swift):
     lineas = codigo_swift.splitlines()
 
     for linea in lineas:
+        # ----------------------------------- Buscar imports
+        importacion = re.search(regex_imports, linea)
+        if importacion:  # detectamos un import
+            imports_info.append(importacion.group(1))  # Añadir el nombre del módulo importado
+            continue
+
         # ----------------------------------- Buscar clases
         clase = re.search(regex_clases, linea)
         if clase:  # detectamos una clase
@@ -66,13 +73,16 @@ def extract_info(codigo_swift):
                    for clase, funciones in clases_y_funciones.items()}
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
 
-    return clases_info, funciones_info
+    return imports_info, clases_info, funciones_info
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
     # Código Swift que deseas analizar
     codigo_swift = """
+    import Foundation
+    import UIKit
+
     class Test {
         func add(a: Int, b: Int) -> Int {
             return a + b
@@ -103,15 +113,18 @@ if __name__ == "__main__":
     """  # Código Swift que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info = extract_info(codigo_swift)
+    imports_info, clases_info, funciones_info = extract_info(codigo_swift)
 
     # Mostramos los resultados
+    print("Imports encontrados:")
+    print(imports_info)
     print("Clases y funciones encontradas:")
     print(clases_info)
     print("Funciones globales encontradas:")
     print(funciones_info)
 
     # Definir la salida esperada
+    salida_esperada_imports = ['Foundation', 'UIKit']
     salida_esperada_clases = {
         'Test': [
             {'name': 'add', 'params': ['a: Int', 'b: Int'], 'return': 'Int'},
@@ -128,7 +141,7 @@ if __name__ == "__main__":
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada
-    if clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
+    if imports_info == salida_esperada_imports and clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
         print("Prueba exitosa: Los resultados son los esperados.")
     else:
         print("Prueba fallida: Los resultados no coinciden con lo esperado.")

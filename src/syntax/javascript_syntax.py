@@ -4,6 +4,7 @@ def extract_info(codigo_javascript):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
+    regex_imports = r'import\s+[\w\s{},*]+\s+from\s+["\'][\w/\-.]+["\']'  # Regex para detectar imports
     regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)'
     regex_funciones_clase = r'([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*\{'
     regex_funciones_globales = r'function\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*\{'
@@ -13,6 +14,7 @@ def extract_info(codigo_javascript):
     regex_control_blocks = r'\b(if|else|for|while|switch|catch|try|finally)\b'
 
     # ---OUTPUT--------
+    imports_info = []  # Lista para almacenar imports
     clases_y_funciones = {}
     funciones_globales = []
 
@@ -25,11 +27,21 @@ def extract_info(codigo_javascript):
     lineas = codigo_javascript.splitlines()
 
     for linea in lineas:
+        # Ignorar líneas vacías
+        if not linea.strip():
+            continue
+
         # Actualizar el contador de llaves abiertas
         llaves_abiertas += linea.count('{') - linea.count('}')
 
         # Ignorar bloques de control como if, else, for, etc.
         if re.search(regex_control_blocks, linea):
+            continue
+
+        # ----------------------------------- Buscar imports
+        importacion = re.search(regex_imports, linea)
+        if importacion:
+            imports_info.append(importacion.group(0))  # Almacenar la línea del import
             continue
 
         # ----------------------------------- Buscar clases
@@ -91,12 +103,15 @@ def extract_info(codigo_javascript):
                    for clase, funciones in clases_y_funciones.items()}
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
 
-    return clases_info, funciones_info
+    return imports_info, clases_info, funciones_info
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
     codigo_javascript = """
+    import { module1, module2 } from 'module-path';
+    import defaultExport from 'another-module';
+
     class Test {
         add(a, b) {
             return a + b;
@@ -130,8 +145,9 @@ if __name__ == "__main__":
     """  # Código JavaScript que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info = extract_info(codigo_javascript)
+    imports_info, clases_info, funciones_info = extract_info(codigo_javascript)
 
     # Mostramos los resultados
-    print(clases_info)
-    print(funciones_info)
+    print("Imports Info:", imports_info)
+    print("Clases Info:", clases_info)
+    print("Funciones Info:", funciones_info)

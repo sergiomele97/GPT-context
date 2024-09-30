@@ -5,6 +5,7 @@ def extract_info(codigo_go):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
+    regex_imports = r'import\s+"([^"]+)"'
     regex_structs = r'type\s+([A-Za-z_][A-Za-z0-9_]*)\s+struct\s*{'
     regex_funciones = r'func\s+(?:\([A-Za-z_][A-Za-z0-9_]*\s*\*\w+\)\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*(?:\w+)?\s*{'
     regex_return = r'return\s+([^;]+);?'  # Capturar el valor después del 'return'
@@ -12,6 +13,7 @@ def extract_info(codigo_go):
     # ---OUTPUT--------
     structs_y_funciones = {}
     funciones_globales = []
+    imports = []
 
     # ---VARIABLES-----
     struct_actual = None
@@ -22,6 +24,12 @@ def extract_info(codigo_go):
     lineas = codigo_go.splitlines()
 
     for linea in lineas:
+        # Capturar imports
+        importacion = re.search(regex_imports, linea)
+        if importacion:
+            imports.append(importacion.group(1))
+            continue
+
         llaves_abiertas += linea.count('{') - linea.count('}')
 
         # ----------------------------------- Buscar structs
@@ -63,7 +71,8 @@ def extract_info(codigo_go):
                     for struct, funciones in structs_y_funciones.items()}
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
 
-    return structs_info, funciones_info
+    return imports, structs_info, funciones_info  # Devolver también los imports
+
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
@@ -110,15 +119,18 @@ if __name__ == "__main__":
     """  # Código Go que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    structs_info, funciones_info = extract_info(codigo_go)
+    imports_info, structs_info, funciones_info = extract_info(codigo_go)
 
     # Mostramos los resultados
+    print("Imports encontrados:")
+    print(imports_info)
     print("Structs y funciones encontradas:")
     print(structs_info)
     print("Funciones globales encontradas:")
     print(funciones_info)
 
     # Definir la salida esperada
+    salida_esperada_imports = ["fmt"]
     salida_esperada_structs = {
         'Test': [
             {'name': 'Add', 'params': ['a int', 'b int'], 'return': 'a + b'},
@@ -135,7 +147,7 @@ if __name__ == "__main__":
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada
-    if structs_info == salida_esperada_structs and funciones_info == salida_esperada_globales:
+    if imports_info == salida_esperada_imports and structs_info == salida_esperada_structs and funciones_info == salida_esperada_globales:
         print("Prueba exitosa: Los resultados son los esperados.")
     else:
         print("Prueba fallida: Los resultados no coinciden con lo esperado.")

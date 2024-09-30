@@ -1,16 +1,20 @@
 import re
 
+
 def extract_info(codigo_r):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
     regex_funciones = r'(?<!#)\s*([a-zA-Z_][a-zA-Z0-9_.]*)\s*<-\s*function\s*\(([^)]*)\)'  # Captura funciones
     regex_return = r'return\s*([^#;]*)'  # Captura el valor después del 'return'
+    regex_imports = r'(?<!#)\s*library\s*\(([^)]+)\)'  # Captura imports de librerías
+    regex_imports_alt = r'(?<!#)\s*require\s*\(([^)]+)\)'  # Captura imports alternativos
 
     # ---OUTPUT--------
     funciones_globales = []
+    imports_globales = []
 
-    # ------------------------------------------------------------------------------------------ Lectura linea a linea
+    # ------------------------------------------------------------------------------------------ Lectura línea a línea
     lineas = codigo_r.splitlines()
 
     for linea in lineas:
@@ -33,19 +37,28 @@ def extract_info(codigo_r):
             else:
                 funciones_globales[-1]['return'] = valor_retorno  # Almacenar el valor de retorno de la última función
 
+        # ------------------------------------ Buscar imports usando regex
+        import_match = re.search(regex_imports, linea) or re.search(regex_imports_alt, linea)
+        if import_match:
+            libreria = import_match.group(1).strip()
+            imports_globales.append(libreria)  # Almacenar el nombre de la librería
+
     # --- Formatear la salida en el formato requerido
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
-
-    return funciones_info
+    clases_info = []
+    return imports_globales,clases_info, funciones_info
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
     # Código R que deseas analizar
     codigo_r = """
+    library(ggplot2)
     add <- function(a, b) {
         return(a + b)
     }
+
+    require(dplyr)
 
     printHello <- function() {
         print("Hello World")
@@ -59,13 +72,16 @@ if __name__ == "__main__":
     """
 
     # Llamamos a la función y obtenemos los resultados
-    funciones_info = extract_info(codigo_r)
+    imports_info, funciones_info = extract_info(codigo_r)
 
     # Mostramos los resultados
+    print("Imports encontrados:")
+    print(imports_info)
     print("Funciones encontradas:")
     print(funciones_info)
 
     # Definir la salida esperada
+    salida_esperada_imports = ['ggplot2', 'dplyr']
     salida_esperada_globales = [
         {'name': 'add', 'params': ['a', 'b'], 'return': 'a + b'},
         {'name': 'printHello', 'params': [], 'return': ''},
@@ -73,7 +89,12 @@ if __name__ == "__main__":
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada
-    if funciones_info == salida_esperada_globales:
-        print("Prueba exitosa: Los resultados son los esperados.")
+    if imports_info == salida_esperada_imports:
+        print("Prueba de imports exitosa: Los resultados son los esperados.")
     else:
-        print("Prueba fallida: Los resultados no coinciden con lo esperado.")
+        print("Prueba de imports fallida: Los resultados no coinciden con lo esperado.")
+
+    if funciones_info == salida_esperada_globales:
+        print("Prueba de funciones exitosa: Los resultados son los esperados.")
+    else:
+        print("Prueba de funciones fallida: Los resultados no coinciden con lo esperado.")
