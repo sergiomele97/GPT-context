@@ -1,10 +1,37 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Work\\3-GPT-context\\installer\\InstallerApp\\",
+  "WorkspaceRootPath": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}|InstallerApp\\InstallerApp.csproj|c:\\work\\3-gpt-context\\installer\\installerapp\\installerapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}|InstallerSimple\\InstallerSimple.csproj|c:\\work\\3-gpt-context\\development\\installer\\installerapp\\installersimple\\installersimple.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}|InstallerSimple\\InstallerSimple.csproj|solutionrelative:installersimple\\installersimple.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}|InstallerSimple\\InstallerSimple.csproj|c:\\work\\3-gpt-context\\development\\installer\\installerapp\\installersimple\\fodyweavers.xml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}|InstallerSimple\\InstallerSimple.csproj|solutionrelative:installersimple\\fodyweavers.xml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}|InstallerSimple\\InstallerSimple.csproj|c:\\work\\3-gpt-context\\development\\installer\\installerapp\\installersimple\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}|InstallerSimple\\InstallerSimple.csproj|solutionrelative:installersimple\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}|InstallerApp\\InstallerApp.csproj|c:\\work\\3-gpt-context\\development\\installer\\installerapp\\installerapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}|InstallerApp\\InstallerApp.csproj|solutionrelative:installerapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sergio\\AppData\\Local\\Temp\\.vsdbgsrc\\ed4dcaa25a03ff612535801988c25ea25f1c9fc024d815614a544bd740ff9762\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}|InstallerSimple\\InstallerSimple.csproj|c:\\work\\3-gpt-context\\development\\installer\\installerapp\\installersimple\\installersimple.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}|InstallerSimple\\InstallerSimple.csproj|solutionrelative:installersimple\\installersimple.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}|InstallerApp\\InstallerApp.csproj|c:\\work\\3-gpt-context\\development\\installer\\installerapp\\installerapp\\app.manifest||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}|InstallerApp\\InstallerApp.csproj|solutionrelative:installerapp\\app.manifest||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}|InstallerApp\\InstallerApp.csproj|c:\\work\\3-gpt-context\\development\\installer\\installerapp\\installerapp\\installerapp.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}|InstallerApp\\InstallerApp.csproj|solutionrelative:installerapp\\installerapp.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +41,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,13 +53,102 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FodyWeavers.xml",
+              "DocumentMoniker": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerSimple\\FodyWeavers.xml",
+              "RelativeDocumentMoniker": "InstallerSimple\\FodyWeavers.xml",
+              "ToolTip": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerSimple\\FodyWeavers.xml",
+              "RelativeToolTip": "InstallerSimple\\FodyWeavers.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2024-09-29T17:02:46.25Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "InstallerSimple",
+              "DocumentMoniker": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerSimple\\InstallerSimple.csproj",
+              "RelativeDocumentMoniker": "InstallerSimple\\InstallerSimple.csproj",
+              "ToolTip": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerSimple\\InstallerSimple.csproj",
+              "RelativeToolTip": "InstallerSimple\\InstallerSimple.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-29T16:57:49.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Work\\3-GPT-context\\installer\\InstallerApp\\InstallerApp\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\Sergio\\AppData\\Local\\Temp\\.vsdbgsrc\\ed4dcaa25a03ff612535801988c25ea25f1c9fc024d815614a544bd740ff9762\\Program.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\Sergio\\AppData\\Local\\Temp\\.vsdbgsrc\\ed4dcaa25a03ff612535801988c25ea25f1c9fc024d815614a544bd740ff9762\\Program.cs",
+              "ToolTip": "C:\\Users\\Sergio\\AppData\\Local\\Temp\\.vsdbgsrc\\ed4dcaa25a03ff612535801988c25ea25f1c9fc024d815614a544bd740ff9762\\Program.cs [Solo lectura]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Users\\Sergio\\AppData\\Local\\Temp\\.vsdbgsrc\\ed4dcaa25a03ff612535801988c25ea25f1c9fc024d815614a544bd740ff9762\\Program.cs [Solo lectura]",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAADAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-29T16:41:00.372Z",
+              "EditorCaption": " [Solo lectura]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "InstallerSimple",
+              "DocumentMoniker": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerSimple\\InstallerSimple.csproj",
+              "RelativeDocumentMoniker": "InstallerSimple\\InstallerSimple.csproj",
+              "ToolTip": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerSimple\\InstallerSimple.csproj",
+              "RelativeToolTip": "InstallerSimple\\InstallerSimple.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-29T16:38:33.081Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "InstallerApp",
+              "DocumentMoniker": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj",
+              "RelativeDocumentMoniker": "InstallerApp\\InstallerApp.csproj",
+              "ToolTip": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj",
+              "RelativeToolTip": "InstallerApp\\InstallerApp.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-29T16:38:10.363Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "app.manifest",
+              "DocumentMoniker": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\app.manifest",
+              "RelativeDocumentMoniker": "InstallerApp\\app.manifest",
+              "ToolTip": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\app.manifest",
+              "RelativeToolTip": "InstallerApp\\app.manifest",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001203|",
+              "WhenOpened": "2024-09-29T16:36:24.101Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerSimple\\Program.cs",
+              "RelativeDocumentMoniker": "InstallerSimple\\Program.cs",
+              "ToolTip": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerSimple\\Program.cs",
+              "RelativeToolTip": "InstallerSimple\\Program.cs",
+              "ViewState": "AgIAADgAAAAAAAAAAAAswEUAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-29T16:34:19.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\Program.cs",
               "RelativeDocumentMoniker": "InstallerApp\\Program.cs",
-              "ToolTip": "C:\\Work\\3-GPT-context\\installer\\InstallerApp\\InstallerApp\\Program.cs",
+              "ToolTip": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\Program.cs",
               "RelativeToolTip": "InstallerApp\\Program.cs",
-              "ViewState": "AgIAAH8AAAAAAAAAAAAkwJIAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOQAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-17T10:00:19.549Z",
               "EditorCaption": ""

@@ -1,10 +1,8 @@
 import re
 
+
 def extract_functions_and_classes(codigo_csharp):
-
     # --------------------------------------------------------------------------------------------------- Parámetros
-
-    global funcion_con_parametros
 
     # ---REGEX---------
     regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)'
@@ -18,13 +16,12 @@ def extract_functions_and_classes(codigo_csharp):
     # ---VARIABLES-----
     clase_actual = None
     llaves_abiertas = 0  # Contador de {}
-
+    funcion_con_parametros = None  # Inicializar aquí para evitar el error
 
     # ------------------------------------------------------------------------------------------ Lectura linea a linea
     lineas = codigo_csharp.splitlines()
 
     for linea in lineas:
-
         llaves_abiertas += linea.count('{') - linea.count('}')
 
         # ----------------------------------- Buscar clases
@@ -38,29 +35,26 @@ def extract_functions_and_classes(codigo_csharp):
         # ------------------------------------ Buscar funciones
         funcion = re.search(regex_funciones, linea)
         if funcion:
-
             nombre_funcion = funcion.group(2)
             parametros = funcion.group(3).split(',') if funcion.group(3).strip() else []
             parametros = [param.strip() for param in parametros]  # Limpiar espacios
-            funcion_con_parametros = {'name': nombre_funcion, 'params': parametros, 'return': "None"}
+            funcion_con_parametros = {'name': nombre_funcion, 'params': parametros, 'return': ''}
 
             if clase_actual and llaves_abiertas > 0:
                 # Si estamos dentro de una clase, agregamos la función a esa clase
-                funcion_con_parametros['return'] = ""  # Inicializar retorno
                 clases_y_funciones[clase_actual].append(funcion_con_parametros)
             else:
                 # Si no estamos dentro de una clase, es una función global
-                funcion_con_parametros['return'] = "" # Inicializar retorno
                 funciones_globales.append(funcion_con_parametros)
 
         # ------------------------------------ Buscar return usando regex
         retorno = re.search(regex_return, linea)
-        if retorno:
+        if retorno and funcion_con_parametros:  # Verificar que funcion_con_parametros está inicializada
             valor_retorno = retorno.group(1).strip()
-            if funcion_con_parametros:
-                if funcion_con_parametros['return'] == "None":
-                    funcion_con_parametros['return'] = ""
-                funcion_con_parametros['return'] += valor_retorno
+            if funcion_con_parametros['return']:
+                funcion_con_parametros['return'] += f"; {valor_retorno}"  # Añadir con separación
+            else:
+                funcion_con_parametros['return'] = valor_retorno  # Almacenar solo el valor de retorno
 
         # Si las llaves llegan a 0, salimos de la clase
         if llaves_abiertas == 0:
@@ -71,35 +65,36 @@ def extract_functions_and_classes(codigo_csharp):
                    for clase, funciones in clases_y_funciones.items()}
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
 
-    return  clases_info, funciones_info
+    return clases_info, funciones_info
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
+    # Código C# con errores de sintaxis corregidos
     codigo_csharp = """
     public class Test {
         public int Add(int a, int b) {
             return a + b;
         }
-    
+
         public void PrintHello() {
             Console.WriteLine("Hello World");
             return;  // No tiene valor de retorno
         }
     }
-    
+
     public class AnotherClass {
         public string GetName() {
             return "MyName";
         }
-    
+
         private void Log(string message) {
-            if(a = 1){ return false}
-            else(){return True}
+            if(a == 1) { return false; }
+            else { return true; }
             Console.WriteLine(message);
         }
     }
-    
+
     // Esta es una función global
     public int Multiply(int x, int y) {
         return x * y;
@@ -107,8 +102,32 @@ if __name__ == "__main__":
     """  # Código C# que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info  = extract_functions_and_classes(codigo_csharp)
+    clases_info, funciones_info = extract_functions_and_classes(codigo_csharp)
 
     # Mostramos los resultados
+    print("Clases y funciones encontradas:")
     print(clases_info)
+    print("Funciones globales encontradas:")
     print(funciones_info)
+
+    # Definir la salida esperada
+    salida_esperada_clases = {
+        'Test': [
+            {'name': 'Add', 'params': ['int a', 'int b'], 'return': 'a + b'},
+            {'name': 'PrintHello', 'params': [], 'return': ''}
+        ],
+        'AnotherClass': [
+            {'name': 'GetName', 'params': [], 'return': '"MyName"'},
+            {'name': 'Log', 'params': ['string message'], 'return': 'false; true'}
+        ]
+    }
+
+    salida_esperada_globales = [
+        {'name': 'Multiply', 'params': ['int x', 'int y'], 'return': 'x * y'}
+    ]
+
+    # Comprobamos que los resultados coincidan con la salida esperada
+    if clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
+        print("Prueba exitosa: Los resultados son los esperados.")
+    else:
+        print("Prueba fallida: Los resultados no coinciden con lo esperado.")

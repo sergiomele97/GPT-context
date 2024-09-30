@@ -1,0 +1,2 @@
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\bin\Release\net8.0\win-x64\publish\InstallerApp.pdb
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\bin\Release\net8.0\win-x64\publish\InstallerApp.exe

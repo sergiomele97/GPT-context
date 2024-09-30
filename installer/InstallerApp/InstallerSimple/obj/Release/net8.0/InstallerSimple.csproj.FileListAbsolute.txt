@@ -1,0 +1,15 @@
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\bin\Release\net8.0\InstallerSimple.exe
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\bin\Release\net8.0\InstallerSimple.deps.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\bin\Release\net8.0\InstallerSimple.runtimeconfig.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\bin\Release\net8.0\InstallerSimple.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\bin\Release\net8.0\InstallerSimple.pdb
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\obj\Release\net8.0\InstallerSimple.GeneratedMSBuildEditorConfig.editorconfig
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\obj\Release\net8.0\InstallerSimple.AssemblyInfoInputs.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\obj\Release\net8.0\InstallerSimple.AssemblyInfo.cs
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\obj\Release\net8.0\InstallerSimple.csproj.CoreCompileInputs.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\obj\Release\net8.0\InstallerSimple.sourcelink.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\obj\Release\net8.0\InstallerSimple.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\obj\Release\net8.0\refint\InstallerSimple.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\obj\Release\net8.0\InstallerSimple.pdb
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\obj\Release\net8.0\InstallerSimple.genruntimeconfig.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\obj\Release\net8.0\ref\InstallerSimple.dll

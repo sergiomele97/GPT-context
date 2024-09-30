@@ -17,8 +17,16 @@ def read_code_files(directory):
 def generate_summary(code_files):
     summary = []
     for file_path, code in code_files:
-        classes, functions = language.extract_info(file_path, code)
+        try:
+            # Intenta extraer las clases y funciones del archivo
+            classes, functions = language.extract_info(file_path, code)
+        except Exception as e:
+            # Maneja la excepción, registrando el error pero permitiendo que el proceso continúe
+            print(f"Error procesando {file_path}: {e}")
+            continue  # Pasa al siguiente archivo en lugar de detener la ejecución
+        # Si todo está bien, añade los resultados al resumen
         summary.append((file_path, classes, functions))
+
     return summary
 
 

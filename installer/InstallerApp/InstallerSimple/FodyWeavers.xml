@@ -1,0 +1,5 @@
+﻿<Costura>
+	<IncludeAssemblies>
+		<Assembly>NombreDelAssembly</Assembly>
+	</IncludeAssemblies>
+</Costura>

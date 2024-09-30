@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Work\\3-GPT-context\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj": {}
+    "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj": {}
   },
   "projects": {
-    "C:\\Work\\3-GPT-context\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj": {
+    "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Work\\3-GPT-context\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj",
+        "projectUniqueName": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj",
         "projectName": "InstallerApp",
-        "projectPath": "C:\\Work\\3-GPT-context\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj",
+        "projectPath": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj",
         "packagesPath": "C:\\Users\\Sergio\\.nuget\\packages\\",
-        "outputPath": "C:\\Work\\3-GPT-context\\installer\\InstallerApp\\InstallerApp\\obj\\",
+        "outputPath": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Sergio\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -45,6 +45,20 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Costura.Fody": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.7.0, )"
+            },
+            "Fody": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.8.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

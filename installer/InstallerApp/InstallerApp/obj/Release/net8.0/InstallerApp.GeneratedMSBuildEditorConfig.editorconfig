@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = InstallerApp
-build_property.ProjectDir = C:\Work\3-GPT-context\installer\InstallerApp\InstallerApp\
+build_property.ProjectDir = C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

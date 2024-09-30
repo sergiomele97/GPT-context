@@ -1,0 +1,2 @@
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\bin\Release\net8.0\win-x64\publish\InstallerSimple.pdb
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerSimple\bin\Release\net8.0\win-x64\publish\InstallerSimple.exe
