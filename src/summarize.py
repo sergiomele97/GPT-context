@@ -1,5 +1,4 @@
 import os
-
 import language
 
 
@@ -18,14 +17,14 @@ def generate_summary(code_files):
     summary = []
     for file_path, code in code_files:
         try:
-            # Intenta extraer las clases y funciones del archivo
-            classes, functions = language.extract_info(file_path, code)
+            # Intenta extraer los imports, clases y funciones del archivo
+            imports, classes, functions = language.extract_info(file_path, code)
         except Exception as e:
             # Maneja la excepción, registrando el error pero permitiendo que el proceso continúe
             print(f"Error procesando {file_path}: {e}")
             continue  # Pasa al siguiente archivo en lugar de detener la ejecución
         # Si todo está bien, añade los resultados al resumen
-        summary.append((file_path, classes, functions))
+        summary.append((file_path, imports, classes, functions))
 
     return summary
 
@@ -36,13 +35,14 @@ def generate_project_context(directory):
     summary = generate_summary(code_files)
 
     context = f"### Contexto del Proyecto\n"
+    context += f"**Te paso la estructura de archivos del proyecto con sus imports, clases y funciones (parámetros) -> salidas:**\n"
 
-
-    # Optimización de la estructura de archivos
-    context += f"**Te paso la estructura de archivos del proyecto con sus funciones (parámetros) -> salidas:**\n"
-
-    for file_path, classes, functions in summary:
+    for file_path, imports, classes, functions in summary:
         context_line = f"{file_path}: "
+
+        # Agregar imports
+        if imports:
+            context_line += f"Imports: {', '.join(imports)}; "
 
         # Agregar clases y funciones
         for class_name, class_functions in classes.items():

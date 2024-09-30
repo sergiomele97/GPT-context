@@ -1,12 +1,11 @@
 import re
 
-
-def extract_info(codigo_java):
+def extract_info(codigo_kotlin):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
     regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)'
-    regex_funciones = r'(public|private|protected|static|final|void)\s+([A-Za-z_][A-Za-z0-9_<>]*)\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)'
+    regex_funciones = r'fun\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*(:\s*[A-Za-z_][A-Za-z0-9_]*)?\s*{'
     regex_return = r'return\s+([^;]+);?'  # Capturar el valor después del 'return'
 
     # ---OUTPUT--------
@@ -18,8 +17,8 @@ def extract_info(codigo_java):
     llaves_abiertas = 0  # Contador de {}
     funcion_con_parametros = None  # Inicializar aquí para evitar el error
 
-    # ------------------------------------------------------------------------------------------ Lectura linea a linea
-    lineas = codigo_java.splitlines()
+    # ------------------------------------------------------------------------------------------ Lectura línea a línea
+    lineas = codigo_kotlin.splitlines()
 
     for linea in lineas:
         llaves_abiertas += linea.count('{') - linea.count('}')
@@ -35,8 +34,8 @@ def extract_info(codigo_java):
         # ------------------------------------ Buscar funciones
         funcion = re.search(regex_funciones, linea)
         if funcion:
-            nombre_funcion = funcion.group(3)
-            parametros = funcion.group(4).split(',') if funcion.group(4).strip() else []
+            nombre_funcion = funcion.group(1)
+            parametros = funcion.group(2).split(',') if funcion.group(2).strip() else []
             parametros = [param.strip() for param in parametros]  # Limpiar espacios
             funcion_con_parametros = {'name': nombre_funcion, 'params': parametros, 'return': ''}
 
@@ -70,39 +69,39 @@ def extract_info(codigo_java):
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
-    # Código Java para analizar
-    codigo_java = """
-    public class Test {
-        public int add(int a, int b) {
-            return a + b;
+    # Código Kotlin de ejemplo
+    codigo_kotlin = """
+    class Test {
+        fun add(a: Int, b: Int): Int {
+            return a + b
         }
 
-        public void printHello() {
-            System.out.println("Hello World");
-            return;  // No tiene valor de retorno
+        fun printHello() {
+            println("Hello World")
+            return  
         }
     }
 
-    public class AnotherClass {
-        public String getName() {
-            return "MyName";
+    class AnotherClass {
+        fun getName(): String {
+            return "MyName"
         }
 
-        private boolean log(String message) {
-            if (a == 1) { return false; }
-            else { return true; }
-            System.out.println(message);
+        private fun log(message: String) {
+            if (a == 1) { return false }
+            else { return true }
+            println(message)
         }
     }
 
     // Esta es una función global
-    public int multiply(int x, int y) {
-        return x * y;
+    fun multiply(x: Int, y: Int): Int {
+        return x * y
     }
-    """  # Código Java que deseas analizar
+    """  # Código Kotlin que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info = extract_info(codigo_java)
+    clases_info, funciones_info = extract_info(codigo_kotlin)
 
     # Mostramos los resultados
     print("Clases y funciones encontradas:")
@@ -113,17 +112,17 @@ if __name__ == "__main__":
     # Definir la salida esperada
     salida_esperada_clases = {
         'Test': [
-            {'name': 'add', 'params': ['int a', 'int b'], 'return': 'a + b'},
-            {'name': 'printHello', 'params': [], 'return': ''}
+            {'name': 'add', 'params': ['a: Int', 'b: Int'], 'return': 'a + b'},
+            {'name': 'printHello', 'params': [], 'return': ''}  # Cambiado para reflejar que no hay retorno
         ],
         'AnotherClass': [
             {'name': 'getName', 'params': [], 'return': '"MyName"'},
-            {'name': 'log', 'params': ['String message'], 'return': 'false; true'}
+            {'name': 'log', 'params': ['message: String'], 'return': 'false; true'}
         ]
     }
 
     salida_esperada_globales = [
-        {'name': 'multiply', 'params': ['int x', 'int y'], 'return': 'x * y'}
+        {'name': 'multiply', 'params': ['x: Int', 'y: Int'], 'return': 'x * y'}
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada

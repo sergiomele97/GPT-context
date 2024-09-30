@@ -1,17 +1,18 @@
 import re
 
-
-def extract_functions_and_classes(codigo_csharp):
+def extract_info(codigo_csharp):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
+    regex_imports = r'using\s+([A-Za-z0-9_.]+);'  # Captura las líneas de 'using'
     regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)'
     regex_funciones = r'(public|private|protected|internal)\s+[A-Za-z_][A-Za-z0-9_<>]*\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)'
-    regex_return = r'return\s+([^;]+);?'  # Capturar el valor después del 'return'
+    regex_return = r'return\s+([^;]+);?'  # Captura el valor después del 'return'
 
     # ---OUTPUT--------
     clases_y_funciones = {}
     funciones_globales = []
+    imports = []
 
     # ---VARIABLES-----
     clase_actual = None
@@ -23,6 +24,12 @@ def extract_functions_and_classes(codigo_csharp):
 
     for linea in lineas:
         llaves_abiertas += linea.count('{') - linea.count('}')
+
+        # ----------------------------------- Buscar imports
+        using_import = re.search(regex_imports, linea)
+        if using_import:
+            imports.append(using_import.group(1))
+            continue
 
         # ----------------------------------- Buscar clases
         clase = re.search(regex_clases, linea)
@@ -65,13 +72,16 @@ def extract_functions_and_classes(codigo_csharp):
                    for clase, funciones in clases_y_funciones.items()}
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
 
-    return clases_info, funciones_info
+    return imports, clases_info, funciones_info
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
-    # Código C# con errores de sintaxis corregidos
+    # Código C# de prueba
     codigo_csharp = """
+    using System;
+    using System.Collections.Generic;
+
     public class Test {
         public int Add(int a, int b) {
             return a + b;
@@ -102,15 +112,18 @@ if __name__ == "__main__":
     """  # Código C# que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info = extract_functions_and_classes(codigo_csharp)
+    imports, clases_info, funciones_info = extract_info(codigo_csharp)
 
     # Mostramos los resultados
+    print("Imports encontrados:")
+    print(imports)
     print("Clases y funciones encontradas:")
     print(clases_info)
     print("Funciones globales encontradas:")
     print(funciones_info)
 
     # Definir la salida esperada
+    salida_esperada_imports = ['System', 'System.Collections.Generic']
     salida_esperada_clases = {
         'Test': [
             {'name': 'Add', 'params': ['int a', 'int b'], 'return': 'a + b'},
@@ -121,13 +134,12 @@ if __name__ == "__main__":
             {'name': 'Log', 'params': ['string message'], 'return': 'false; true'}
         ]
     }
-
     salida_esperada_globales = [
         {'name': 'Multiply', 'params': ['int x', 'int y'], 'return': 'x * y'}
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada
-    if clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
+    if imports == salida_esperada_imports and clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
         print("Prueba exitosa: Los resultados son los esperados.")
     else:
         print("Prueba fallida: Los resultados no coinciden con lo esperado.")

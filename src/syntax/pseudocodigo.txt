@@ -1,46 +1,44 @@
 import re
 
 
-def extract_info(codigo_java):
+def extract_functions_and_classes(codigo_<nombre_del_lenguaje>):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
-    regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)'
-    regex_funciones = r'(public|private|protected|static|final|void)\s+([A-Za-z_][A-Za-z0-9_<>]*)\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)'
-    regex_return = r'return\s+([^;]+);?'  # Capturar el valor después del 'return'
+    regex_clases = <comando regex para detectar una clase>
+    regex_funciones = <comando regex para detectar una funcion>
+    regex_return = <comando regex para detectar el retorno de una funcion>
 
     # ---OUTPUT--------
     clases_y_funciones = {}
     funciones_globales = []
 
     # ---VARIABLES-----
-    clase_actual = None
-    llaves_abiertas = 0  # Contador de {}
-    funcion_con_parametros = None  # Inicializar aquí para evitar el error
+    estamos_dentro_de_una_clase = False
 
     # ------------------------------------------------------------------------------------------ Lectura linea a linea
-    lineas = codigo_java.splitlines()
+    lineas = codigo_csharp.splitlines()
 
     for linea in lineas:
-        llaves_abiertas += linea.count('{') - linea.count('}')
+
 
         # ----------------------------------- Buscar clases
         clase = re.search(regex_clases, linea)
-        if clase:
+        if clase: # detectamos una clase
+            estamos_dentro_de_una_clase = True
             clase_actual = clase.group(1)
             clases_y_funciones[clase_actual] = []  # Inicializar la lista de funciones para esta clase
-            llaves_abiertas = 1
             continue
 
         # ------------------------------------ Buscar funciones
         funcion = re.search(regex_funciones, linea)
-        if funcion:
-            nombre_funcion = funcion.group(3)
-            parametros = funcion.group(4).split(',') if funcion.group(4).strip() else []
+        if funcion: #detectamos una funcion
+            nombre_funcion = funcion.group(2)
+            parametros = funcion.group(3).split(',') if funcion.group(3).strip() else []
             parametros = [param.strip() for param in parametros]  # Limpiar espacios
             funcion_con_parametros = {'name': nombre_funcion, 'params': parametros, 'return': ''}
 
-            if clase_actual and llaves_abiertas > 0:
+            if estamos_dentro_de_una_clase:
                 # Si estamos dentro de una clase, agregamos la función a esa clase
                 clases_y_funciones[clase_actual].append(funcion_con_parametros)
             else:
@@ -51,14 +49,11 @@ def extract_info(codigo_java):
         retorno = re.search(regex_return, linea)
         if retorno and funcion_con_parametros:  # Verificar que funcion_con_parametros está inicializada
             valor_retorno = retorno.group(1).strip()
-            if funcion_con_parametros['return']:
-                funcion_con_parametros['return'] += f"; {valor_retorno}"  # Añadir con separación
-            else:
-                funcion_con_parametros['return'] = valor_retorno  # Almacenar solo el valor de retorno
-
+            #añadimos el retorno a la funcion
         # Si las llaves llegan a 0, salimos de la clase
-        if llaves_abiertas == 0:
-            clase_actual = None
+
+        if fin de clase:    # detectamos cuando acaba una clase
+            estamos_dentro_de_una_clase = False
 
     # --- Formatear la salida en el formato requerido
     clases_info = {clase: [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones]
@@ -70,39 +65,39 @@ def extract_info(codigo_java):
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
-    # Código Java para analizar
-    codigo_java = """
+    # Código C# con errores de sintaxis corregidos
+    codigo_csharp = """
     public class Test {
-        public int add(int a, int b) {
+        public int Add(int a, int b) {
             return a + b;
         }
 
-        public void printHello() {
-            System.out.println("Hello World");
+        public void PrintHello() {
+            Console.WriteLine("Hello World");
             return;  // No tiene valor de retorno
         }
     }
 
     public class AnotherClass {
-        public String getName() {
+        public string GetName() {
             return "MyName";
         }
 
-        private boolean log(String message) {
-            if (a == 1) { return false; }
+        private void Log(string message) {
+            if(a == 1) { return false; }
             else { return true; }
-            System.out.println(message);
+            Console.WriteLine(message);
         }
     }
 
     // Esta es una función global
-    public int multiply(int x, int y) {
+    public int Multiply(int x, int y) {
         return x * y;
     }
-    """  # Código Java que deseas analizar
+    """  # Código C# que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info = extract_info(codigo_java)
+    clases_info, funciones_info = extract_functions_and_classes(codigo_csharp)
 
     # Mostramos los resultados
     print("Clases y funciones encontradas:")
@@ -113,17 +108,17 @@ if __name__ == "__main__":
     # Definir la salida esperada
     salida_esperada_clases = {
         'Test': [
-            {'name': 'add', 'params': ['int a', 'int b'], 'return': 'a + b'},
-            {'name': 'printHello', 'params': [], 'return': ''}
+            {'name': 'Add', 'params': ['int a', 'int b'], 'return': 'a + b'},
+            {'name': 'PrintHello', 'params': [], 'return': ''}
         ],
         'AnotherClass': [
-            {'name': 'getName', 'params': [], 'return': '"MyName"'},
-            {'name': 'log', 'params': ['String message'], 'return': 'false; true'}
+            {'name': 'GetName', 'params': [], 'return': '"MyName"'},
+            {'name': 'Log', 'params': ['string message'], 'return': 'false; true'}
         ]
     }
 
     salida_esperada_globales = [
-        {'name': 'multiply', 'params': ['int x', 'int y'], 'return': 'x * y'}
+        {'name': 'Multiply', 'params': ['int x', 'int y'], 'return': 'x * y'}
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada

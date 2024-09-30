@@ -1,10 +1,29 @@
 import ast
 
+def extract_imports(code):
+    """Extrae las declaraciones de importación del código Python."""
+    tree = ast.parse(code)
+    imports = []
 
-def extract_functions_and_classes(code):
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                imports.append(alias.name)
+        elif isinstance(node, ast.ImportFrom):
+            imports.append(node.module)  # Añadir el módulo
+            for alias in node.names:
+                imports.append(f"{node.module}.{alias.name}")  # Añadir la función o clase
+
+    return imports
+
+def extract_info(code):
+    """Extrae imports, funciones y clases del código Python."""
     tree = ast.parse(code)
     classes_info = {}
     functions_info = []
+
+    # Extraer imports
+    imports = extract_imports(code)
 
     for node in ast.walk(tree):
         if isinstance(node, ast.ClassDef):
@@ -19,14 +38,12 @@ def extract_functions_and_classes(code):
             func_info = extract_function_info(node, code)
             functions_info.append(func_info)
 
-    return classes_info, functions_info
-
+    return imports, classes_info, functions_info  # Cambiar el retorno
 
 def extract_function_info(node, code):
+    """Extrae información sobre funciones individuales."""
     func_name = node.name
-    # Extraer parámetros
     params = [arg.arg for arg in node.args.args]
-    # Extraer lo que se retorna
     returns = []
     for return_node in [n for n in ast.walk(node) if isinstance(n, ast.Return)]:
         if return_node.value:
@@ -39,33 +56,49 @@ def extract_function_info(node, code):
         'return': return_value
     }
 
+def generate_summary(code_files):
+    """Genera un resumen de los archivos de código, incluyendo imports, clases y funciones."""
+    summary = []
+    for file_path, code in code_files:
+        try:
+            # Extraer imports, clases y funciones del código
+            imports, classes, functions = extract_info(code)
+        except Exception as e:
+            print(f"Error procesando {file_path}: {e}")
+            continue
+        # Agregar resultados al resumen
+        summary.append((file_path, imports, classes, functions))
+
+    return summary
 
 # Test de la función
 if __name__ == "__main__":
     code_sample = """
-    class Test:
-        def add(self, a, b):
-            return a + b
-    
-        def print_hello():
-            print("Hello World")
-            return  # No tiene valor de retorno
-    
-    class AnotherClass:
-        def get_name():
-            return "MyName"
-    
-        def log(message):
-            if a == 1:
-                return False
-            else:
-                return True
-            print(message)
-    
-    # Esta es una función global
-    def multiply(x, y):
-        return x * y
-    
-        """
+import os
+from datetime import datetime
 
-    classes_info, functions_info = extract_functions_and_classes(code_sample)
+class Test:
+    def add(self, a, b):
+        return a + b
+
+    def print_hello(self):
+        print("Hello World")
+        return  # No tiene valor de retorno
+
+class AnotherClass:
+    def get_name(self):
+        return "MyName"
+
+    def log(self, message):
+        if message == "Hello":
+            return False
+        else:
+            return True
+
+def multiply(x, y):
+    return x * y
+"""
+
+    code_files = [("test_file.py", code_sample)]
+    summary = generate_summary(code_files)
+    print(summary)

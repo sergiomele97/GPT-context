@@ -1,46 +1,50 @@
 import re
 
 
-def extract_info(codigo_java):
+def extract_info(codigo_swift):
     # --------------------------------------------------------------------------------------------------- Parámetros
 
     # ---REGEX---------
-    regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)'
-    regex_funciones = r'(public|private|protected|static|final|void)\s+([A-Za-z_][A-Za-z0-9_<>]*)\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)'
-    regex_return = r'return\s+([^;]+);?'  # Capturar el valor después del 'return'
+    regex_clases = r'class\s+(\w+)'  # Detecta una clase en Swift
+    regex_funciones = r'func\s+(\w+)\s*\((.*?)\)\s*(->\s*(\w+))?\s*{'  # Detecta una función en Swift
+    regex_return = r'return\s+(.*?)(;|$)'  # Detecta un retorno en una función
 
     # ---OUTPUT--------
     clases_y_funciones = {}
     funciones_globales = []
 
     # ---VARIABLES-----
-    clase_actual = None
-    llaves_abiertas = 0  # Contador de {}
-    funcion_con_parametros = None  # Inicializar aquí para evitar el error
+    estamos_dentro_de_una_clase = False
+    funcion_con_parametros = None  # Para guardar la función actual
 
     # ------------------------------------------------------------------------------------------ Lectura linea a linea
-    lineas = codigo_java.splitlines()
+    lineas = codigo_swift.splitlines()
 
     for linea in lineas:
-        llaves_abiertas += linea.count('{') - linea.count('}')
-
         # ----------------------------------- Buscar clases
         clase = re.search(regex_clases, linea)
-        if clase:
+        if clase:  # detectamos una clase
+            estamos_dentro_de_una_clase = True
             clase_actual = clase.group(1)
             clases_y_funciones[clase_actual] = []  # Inicializar la lista de funciones para esta clase
-            llaves_abiertas = 1
             continue
 
         # ------------------------------------ Buscar funciones
         funcion = re.search(regex_funciones, linea)
-        if funcion:
-            nombre_funcion = funcion.group(3)
-            parametros = funcion.group(4).split(',') if funcion.group(4).strip() else []
+        if funcion:  # detectamos una función
+            nombre_funcion = funcion.group(1)
+            parametros = funcion.group(2).split(',') if funcion.group(2).strip() else []
             parametros = [param.strip() for param in parametros]  # Limpiar espacios
-            funcion_con_parametros = {'name': nombre_funcion, 'params': parametros, 'return': ''}
+            return_type = funcion.group(4) if funcion.group(4) else ''  # Tipo de retorno
 
-            if clase_actual and llaves_abiertas > 0:
+            # Crear un diccionario para la función
+            funcion_con_parametros = {
+                'name': nombre_funcion,
+                'params': parametros,
+                'return': return_type  # Guardar el tipo de retorno
+            }
+
+            if estamos_dentro_de_una_clase:
                 # Si estamos dentro de una clase, agregamos la función a esa clase
                 clases_y_funciones[clase_actual].append(funcion_con_parametros)
             else:
@@ -50,15 +54,12 @@ def extract_info(codigo_java):
         # ------------------------------------ Buscar return usando regex
         retorno = re.search(regex_return, linea)
         if retorno and funcion_con_parametros:  # Verificar que funcion_con_parametros está inicializada
-            valor_retorno = retorno.group(1).strip()
-            if funcion_con_parametros['return']:
-                funcion_con_parametros['return'] += f"; {valor_retorno}"  # Añadir con separación
-            else:
-                funcion_con_parametros['return'] = valor_retorno  # Almacenar solo el valor de retorno
+            # Añadimos el valor de retorno a la función actual
+            funcion_con_parametros['return'] = retorno.group(1).strip()  # Capturamos el valor de retorno
 
-        # Si las llaves llegan a 0, salimos de la clase
-        if llaves_abiertas == 0:
-            clase_actual = None
+        # ------------------------------------ Detectar el fin de una clase
+        if linea.strip() == '}':
+            estamos_dentro_de_una_clase = False
 
     # --- Formatear la salida en el formato requerido
     clases_info = {clase: [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones]
@@ -70,39 +71,39 @@ def extract_info(codigo_java):
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
-    # Código Java para analizar
-    codigo_java = """
-    public class Test {
-        public int add(int a, int b) {
-            return a + b;
+    # Código Swift que deseas analizar
+    codigo_swift = """
+    class Test {
+        func add(a: Int, b: Int) -> Int {
+            return a + b
         }
 
-        public void printHello() {
-            System.out.println("Hello World");
-            return;  // No tiene valor de retorno
+        func printHello() {
+            print("Hello World")
+            return  
         }
     }
 
-    public class AnotherClass {
-        public String getName() {
-            return "MyName";
+    class AnotherClass {
+        func getName() -> String {
+            return "MyName"
         }
 
-        private boolean log(String message) {
-            if (a == 1) { return false; }
-            else { return true; }
-            System.out.println(message);
+        private func log(message: String) {
+            if a == 1 { return false }
+            else { return true }
+            print(message)
         }
     }
 
     // Esta es una función global
-    public int multiply(int x, int y) {
-        return x * y;
+    func multiply(x: Int, y: Int) -> Int {
+        return x * y
     }
-    """  # Código Java que deseas analizar
+    """  # Código Swift que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info = extract_info(codigo_java)
+    clases_info, funciones_info = extract_info(codigo_swift)
 
     # Mostramos los resultados
     print("Clases y funciones encontradas:")
@@ -113,17 +114,17 @@ if __name__ == "__main__":
     # Definir la salida esperada
     salida_esperada_clases = {
         'Test': [
-            {'name': 'add', 'params': ['int a', 'int b'], 'return': 'a + b'},
+            {'name': 'add', 'params': ['a: Int', 'b: Int'], 'return': 'Int'},
             {'name': 'printHello', 'params': [], 'return': ''}
         ],
         'AnotherClass': [
-            {'name': 'getName', 'params': [], 'return': '"MyName"'},
-            {'name': 'log', 'params': ['String message'], 'return': 'false; true'}
+            {'name': 'getName', 'params': [], 'return': 'String'},
+            {'name': 'log', 'params': ['message: String'], 'return': 'Bool'}  # Cambiado a Bool
         ]
     }
 
     salida_esperada_globales = [
-        {'name': 'multiply', 'params': ['int x', 'int y'], 'return': 'x * y'}
+        {'name': 'multiply', 'params': ['x: Int', 'y: Int'], 'return': 'Int'}
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada

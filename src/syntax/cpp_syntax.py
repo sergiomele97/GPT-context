@@ -1,12 +1,14 @@
 import re
 
-def extract_functions_and_classes(codigo_cpp):
+def extract_info(codigo_cpp):
     # ---REGEX---------
+    regex_imports = r'^\s*#include\s+<([^>]+)>'  # Regex para capturar imports
     regex_clases = r'class\s+([A-Za-z_][A-Za-z0-9_]*)\s*{'
     regex_funciones = r'\b(public|private|protected|virtual|inline)?\s*[A-Za-z_][A-Za-z0-9_<>]*\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\)\s*{'
     regex_return = r'return\s+([^;]+);?'  # Capturar el valor después del 'return'
 
     # ---OUTPUT--------
+    imports_info = []
     clases_y_funciones = {}
     funciones_globales = []
 
@@ -19,6 +21,12 @@ def extract_functions_and_classes(codigo_cpp):
     lineas = codigo_cpp.splitlines()
 
     for linea in lineas:
+        # Captura de imports
+        import_match = re.search(regex_imports, linea)
+        if import_match:
+            imports_info.append(import_match.group(1))
+            continue
+
         # Actualizar el contador de llaves
         llaves_abiertas += linea.count('{') - linea.count('}')
 
@@ -62,13 +70,16 @@ def extract_functions_and_classes(codigo_cpp):
                    for clase, funciones in clases_y_funciones.items()}
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
 
-    return clases_info, funciones_info
+    return imports_info, clases_info, funciones_info
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
     # Código C++ de ejemplo
     codigo_cpp = """
+    #include <iostream>
+    #include <string>
+
     class Test {
     public:
         int Add(int a, int b) {
@@ -102,15 +113,18 @@ if __name__ == "__main__":
     """  # Código C++ que deseas analizar
 
     # Llamamos a la función y obtenemos los resultados
-    clases_info, funciones_info = extract_functions_and_classes(codigo_cpp)
+    imports_info, clases_info, funciones_info = extract_info(codigo_cpp)
 
     # Mostramos los resultados
+    print("Imports encontrados:")
+    print(imports_info)
     print("Clases y funciones encontradas:")
     print(clases_info)
     print("Funciones globales encontradas:")
     print(funciones_info)
 
     # Definir la salida esperada
+    salida_esperada_imports = ['iostream', 'string']
     salida_esperada_clases = {
         'Test': [
             {'name': 'Add', 'params': ['int a', 'int b'], 'return': 'a + b'},
@@ -127,7 +141,7 @@ if __name__ == "__main__":
     ]
 
     # Comprobamos que los resultados coincidan con la salida esperada
-    if clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
+    if imports_info == salida_esperada_imports and clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
         print("Prueba exitosa: Los resultados son los esperados.")
     else:
         print("Prueba fallida: Los resultados no coinciden con lo esperado.")
