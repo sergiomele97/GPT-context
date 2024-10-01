@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Reflection;
 
@@ -25,19 +26,26 @@ namespace ContextInstaller
                 }
 
                 // Extraer el archivo .exe desde los recursos
-                string exeName = "context.exe"; // Aquí solo ponemos el nombre que queremos usar
-                string resourceName = "InstallerSimple.context.exe"; // Nombre completo del recurso
+                string exeName = "context.exe"; // Nombre del ejecutable
+                string resourceName = "ContextInstaller.context.exe"; // Nombre completo del recurso
                 string destExePath = Path.Combine(installDir, exeName);
                 ExtractResource(resourceName, destExePath);
 
                 Console.WriteLine("Moviendo el ejecutable...");
                 Console.WriteLine($"Ejecutable extraído a: {destExePath}");
 
+                // Extraer el icono a la carpeta de instalación
+                string iconPath = Path.Combine(installDir, "icon.ico");
+                ExtractIcon(iconPath);
+
                 // Añadir al PATH
                 Console.WriteLine("Añadiendo al PATH...");
                 AddToPath(installDir);
 
-                // Final bueno
+                // Editar registro windows (click derecho sobre archivos y carpetas)
+                RegistroMenu.CrearMenuCascada();
+
+                // Mensaje de finalización
                 Console.WriteLine("\nInstalación completada con éxito!\n");
                 Console.WriteLine("\nPresiona cualquier tecla para salir...");
                 Console.ReadKey();
@@ -88,6 +96,24 @@ namespace ContextInstaller
             {
                 Console.WriteLine($"El directorio ya está en el PATH: {folderPath}");
             }
+        }
+
+        static void ExtractIcon(string iconPath)
+        {
+            string resourceName = "ContextInstaller.icon.ico"; // Nombre completo del recurso
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            {
+                if (stream == null)
+                {
+                    throw new FileNotFoundException($"No se encontró el recurso: {resourceName}");
+                }
+
+                using (FileStream fileStream = new FileStream(iconPath, FileMode.Create, FileAccess.Write))
+                {
+                    stream.CopyTo(fileStream);
+                }
+            }
+            Console.WriteLine($"Icono extraído a: {iconPath}");
         }
     }
 }

@@ -5,14 +5,18 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="context.exe" />
+    <None Remove="icon.ico" />
+    <None Remove="icon.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="context.exe" />
+    <EmbeddedResource Include="icon.ico" />
   </ItemGroup>
 
 </Project>

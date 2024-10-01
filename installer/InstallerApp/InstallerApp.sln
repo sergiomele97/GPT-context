@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstallerApp", "InstallerApp\InstallerApp.csproj", "{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallerSimple", "InstallerSimple\InstallerSimple.csproj", "{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContextInstaller", "ContextInstaller\ContextInstaller.csproj", "{4F52B57D-D43A-46EF-BC1F-A10A056A2B04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA9073DB-1ECA-4CCA-85EA-750EA87C754F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F52B57D-D43A-46EF-BC1F-A10A056A2B04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F52B57D-D43A-46EF-BC1F-A10A056A2B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F52B57D-D43A-46EF-BC1F-A10A056A2B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F52B57D-D43A-46EF-BC1F-A10A056A2B04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
