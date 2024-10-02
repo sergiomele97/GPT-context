@@ -1,1 +1,16 @@
-[]
+[
+    {
+        "name": "context_ejemplo1",
+        "files": [
+            "file1.py",
+            "file2.js"
+        ]
+    },
+    {
+        "name": "context_ejemplo2",
+        "files": [
+            "file3.java",
+            "file4.cpp"
+        ]
+    }
+]

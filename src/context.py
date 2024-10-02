@@ -1,5 +1,3 @@
-# main.py
-
 import argparse
 import os
 import summarize
@@ -8,6 +6,7 @@ import directory  # Importa la función desde el nuevo archivo
 def main():
     parser = argparse.ArgumentParser(description="Context management tool.")
     parser.add_argument('command', nargs='?', help="Type 'help' or 'h' to display help.")
+    parser.add_argument('args', nargs=argparse.REMAINDER, help="Additional arguments for commands.")
 
     args = parser.parse_args()
 
@@ -24,10 +23,14 @@ def main():
         - 'context': Ejecuta el comando principal.
         - 'context help' o 'context h': Muestra esta información de ayuda.
         - 'context init': Inicializa el contexto.
+        - 'context add <nombre> <archivos...>': Agrega un contexto personalizado (disponible en futuras versiones).
         """)
 
     elif args.command == 'init':
         directory.init()  # Llama a la función importada
+
+    elif args.command == 'add':
+        print("Comando 'add' reconocido. La funcionalidad estará disponible en futuras versiones.")
 
     else:
         print(f"Comando '{args.command}' no reconocido. Usa 'context help' o 'context h' para obtener ayuda.")
