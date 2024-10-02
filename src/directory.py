@@ -102,7 +102,7 @@ def create_json(json_file_path, context_number):
     if context_number == 1:
         context_data = \
         {
-            "name": "context_ejemplo1",
+            "name": "default",
             "files":
                 [
                 ]
@@ -111,12 +111,10 @@ def create_json(json_file_path, context_number):
         # Valor por defecto: Una lista de objetos context
         context_data =  [
         {
-            "name": "context_ejemplo1",
-            "files": []
-        },
-        {
-            "name": "context_ejemplo2",
-            "files": []
+            "name": "default",
+            "files":
+                [
+                ]
         }
     ]
 

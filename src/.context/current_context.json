@@ -1,7 +1,6 @@
 {
-    "name": "context_ejemplo1",
+    "name": "Prueba1",
     "files": [
-        "file.py",
         "language.py"
     ]
 }

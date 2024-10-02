@@ -43,7 +43,7 @@ def main():
             print("Para cambiar a un contexto o crear uno nuevo: context check #nombre_del_contexto")
             file.check()
         else:
-            file.add(args.args[0])  # context check nombre => cambio de contexto
+            file.change_context(args.args[0])  # context check nombre => cambio de contexto
 
     else:
         print(f"Comando '{args.command}' no reconocido. Usa 'context help' o 'context h' para obtener ayuda.")

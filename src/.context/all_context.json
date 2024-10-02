@@ -1,10 +1,14 @@
 [
     {
-        "name": "context_ejemplo1",
-        "files": []
+        "name": "default",
+        "files": [
+            "language.py"
+        ]
     },
     {
-        "name": "context_ejemplo2",
-        "files": []
+        "name": "Prueba1",
+        "files": [
+            "language.py"
+        ]
     }
 ]
