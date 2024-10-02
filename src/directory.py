@@ -16,7 +16,8 @@ def init():
 
         # Definir la ruta para la carpeta .context y el archivo context.json
         context_dir = os.path.join(os.getcwd(), '.context')
-        json_file_path = os.path.join(context_dir, 'context.json')
+        json_all_file_path = os.path.join(context_dir, 'all_context.json')
+        json_current_file_path = os.path.join(context_dir, 'current_context.json')
 
         # Verificar si la carpeta .context ya existe
         if os.path.exists(context_dir):
@@ -24,10 +25,12 @@ def init():
         else:
             # Crear la carpeta .context si no existe
             os.makedirs(context_dir)
-            create_json(json_file_path)
+            create_json(json_all_file_path, 0)
+            create_json(json_current_file_path, 1)
 
             print(f"Contexto inicializado. Carpeta creada en: {context_dir}")
-            print(f"Archivo JSON creado en: {json_file_path}")
+            print(f"Archivo JSON creado en: {json_all_file_path}")
+            print(f"Archivo JSON creado en: {json_current_file_path}")
 
     except Exception as e:
         print(f"Ocurrió un error al inicializar el contexto: {e}")
@@ -42,7 +45,7 @@ def init():
 # -----------------------------------------------------------
 def locate_context():
     # Definir la ruta global donde debe estar el contexto predeterminado
-    global_context_dir = os.path.join(os.path.expanduser('~'), 'GPT-context', '.context')
+    global_context_dir = os.path.join(os.path.expanduser('~'), '.context')
 
     # Comenzar desde el directorio actual
     current_dir = os.getcwd()
@@ -75,9 +78,13 @@ def locate_context():
             os.makedirs(global_context_dir)
             print(f"Contexto global creado en: {global_context_dir}")
 
-            json_file_path = os.path.join(global_context_dir, 'context.json')
-            create_json(json_file_path)
-            print(f"Archivo JSON creado en: {json_file_path}")
+            json_all_file_path = os.path.join(global_context_dir, 'all_context.json')
+            create_json(json_all_file_path, 0)
+            print(f"Archivo JSON creado en: {json_all_file_path}")
+
+            json_current_file_path = os.path.join(global_context_dir, 'current_context.json')
+            create_json(json_current_file_path, 1)
+            print(f"Archivo JSON creado en: {json_current_file_path}")
 
     except Exception as e:
         print(f"Ocurrió un error al crear el contexto global: {e}")
@@ -90,21 +97,33 @@ def locate_context():
 # Función create_json:
 # Crear un archivo context.json estandar dentro de la carpeta .context
 # -----------------------------------------------------------
-def create_json(json_file_path):
-
-    context_data = [
+def create_json(json_file_path, context_number):
+    # Definir diferentes contextos según el número
+    if context_number == 1:
+        context_data = \
         {
             "name": "context_ejemplo1",
-            "files": ["file1.py", "file2.js"]
+            "files":
+                [
+                ]
+        }
+    else:
+        # Valor por defecto: Una lista de objetos context
+        context_data =  [
+        {
+            "name": "context_ejemplo1",
+            "files": []
         },
         {
             "name": "context_ejemplo2",
-            "files": ["file3.java", "file4.cpp"]
+            "files": []
         }
     ]
+
     # Guardar los contextos en el archivo JSON
     with open(json_file_path, 'w') as json_file:
         json.dump(context_data, json_file, indent=4)
+
 
 # -----------------------------------------------------------
 # Testing
