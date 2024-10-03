@@ -28,7 +28,8 @@ def get_api_key():
     # Desencriptar la API key
     decrypted_api_key = decrypt_api_key(loaded_encrypted_key, key)
 
-    print(f"API key desencriptada: {decrypted_api_key}")
+    print(f"API key recuperada")
+    return decrypted_api_key
 
 def generate_key():
     """Genera una clave a partir del nombre de usuario."""
@@ -83,5 +84,5 @@ def decrypt_api_key(encrypted_key, key):
 
 
 if __name__ == "__main__":
-    #configurar_api_key()
+    configurar_api_key()
     get_api_key()

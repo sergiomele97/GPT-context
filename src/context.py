@@ -3,6 +3,7 @@ import os
 import summarize
 import directory  # Importa la función desde el nuevo archivo
 import file  # Asegúrate de que la función add() esté en file.py
+import gemini
 
 def main():
     parser = argparse.ArgumentParser(description="Context management tool.")
@@ -48,7 +49,7 @@ def main():
             file.check()
 
     elif args.command == 'ia':
-        print("Comando 'context ia' ejecutado. Aquí irá la integración con IA.")
+        gemini.send("Por favor, generame un resumen del proyecto facil de leer para una persona a partir de esta informacion:" + summarize.generate_project_context(os.getcwd()))
 
     else:
         print(f"Comando '{args.command}' no reconocido. Usa 'context help' o 'context h' para obtener ayuda.")

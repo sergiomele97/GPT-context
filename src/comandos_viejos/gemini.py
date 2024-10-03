@@ -3,7 +3,7 @@ import api_key_config
 import time
 import json
 import os
-from src.comandos_viejos import directory
+import directory
 
 
 def send(prompt):
@@ -45,7 +45,7 @@ def choose_files(prompt):
 
 
 def summarize_files(file_list):
-    root_dir = os.path.dirname(os.path.dirname(directory.find_context_repo(os.getcwd())))
+    root_dir = os.path.dirname(os.path.dirname(directory.locate_context()))
 
     if root_dir is None:
         return "No se encontró el directorio .context."
