@@ -51,3 +51,12 @@ def extract_info(file, code):
 
     # Si el archivo no coincide con ningún lenguaje soportado
     return {}, []
+
+    #CONTEXT_Prueba1_START
+    # QUE PASAAAAAAAAAAAAAAAAAAAAAAAAAA CONTEXT_Prueba1_END
+
+    # CONTEXT_Prueba1_START
+    # QUE PASAAAAAAAAAAAAAAAAAAAAAAAAAA CONTEXT_Prueba1_END
+
+# CONTEXT_Prueba1_START
+# QUE PASAAAAAAAAAAAAAFGDFGAAAAAAAAAAAAA CONTEXT_Prueba1_END

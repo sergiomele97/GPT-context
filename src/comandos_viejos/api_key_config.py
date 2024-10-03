@@ -1,7 +1,6 @@
 import google.generativeai as genai
 import json
 import os
-from src.comandos_viejos import directory
 
 
 def execute():

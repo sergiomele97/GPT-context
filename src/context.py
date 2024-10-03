@@ -26,6 +26,7 @@ def main():
         - 'context init': Inicializa el contexto.
         - 'context add <ruta_archivo>': Agrega un archivo al contexto actual.
         - 'context check': Verifica y muestra los archivos en el contexto actual.
+        - 'context ia': Genera un resumen del proyecto usando IA.
         """)
 
     elif args.command == 'init':
@@ -44,6 +45,10 @@ def main():
             file.check()
         else:
             file.change_context(args.args[0])  # context check nombre => cambio de contexto
+            file.check()
+
+    elif args.command == 'ia':
+        print("Comando 'context ia' ejecutado. Aquí irá la integración con IA.")
 
     else:
         print(f"Comando '{args.command}' no reconocido. Usa 'context help' o 'context h' para obtener ayuda.")
