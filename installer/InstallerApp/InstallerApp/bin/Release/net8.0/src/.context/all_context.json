@@ -1,0 +1,14 @@
+[
+    {
+        "name": "default",
+        "files": [
+            "language.py"
+        ]
+    },
+    {
+        "name": "Prueba1",
+        "files": [
+            "language.py"
+        ]
+    }
+]

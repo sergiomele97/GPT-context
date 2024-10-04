@@ -49,6 +49,7 @@
                     Console.WriteLine("Instalando PyInstaller...");
                     ActivateAndRunCommand(venvPath, "pip install pyinstaller");
                     ActivateAndRunCommand(venvPath, "pip install google-generativeai");
+                    ActivateAndRunCommand(venvPath, "pip install cryptography");
                 }
                 else
                 {

@@ -1,0 +1,128 @@
+import re
+
+
+def extract_functions_and_classes(codigo_<nombre_del_lenguaje>):
+    # --------------------------------------------------------------------------------------------------- Parámetros
+
+    # ---REGEX---------
+    regex_clases = <comando regex para detectar una clase>
+    regex_funciones = <comando regex para detectar una funcion>
+    regex_return = <comando regex para detectar el retorno de una funcion>
+
+    # ---OUTPUT--------
+    clases_y_funciones = {}
+    funciones_globales = []
+
+    # ---VARIABLES-----
+    estamos_dentro_de_una_clase = False
+
+    # ------------------------------------------------------------------------------------------ Lectura linea a linea
+    lineas = codigo_csharp.splitlines()
+
+    for linea in lineas:
+
+
+        # ----------------------------------- Buscar clases
+        clase = re.search(regex_clases, linea)
+        if clase: # detectamos una clase
+            estamos_dentro_de_una_clase = True
+            clase_actual = clase.group(1)
+            clases_y_funciones[clase_actual] = []  # Inicializar la lista de funciones para esta clase
+            continue
+
+        # ------------------------------------ Buscar funciones
+        funcion = re.search(regex_funciones, linea)
+        if funcion: #detectamos una funcion
+            nombre_funcion = funcion.group(2)
+            parametros = funcion.group(3).split(',') if funcion.group(3).strip() else []
+            parametros = [param.strip() for param in parametros]  # Limpiar espacios
+            funcion_con_parametros = {'name': nombre_funcion, 'params': parametros, 'return': ''}
+
+            if estamos_dentro_de_una_clase:
+                # Si estamos dentro de una clase, agregamos la función a esa clase
+                clases_y_funciones[clase_actual].append(funcion_con_parametros)
+            else:
+                # Si no estamos dentro de una clase, es una función global
+                funciones_globales.append(funcion_con_parametros)
+
+        # ------------------------------------ Buscar return usando regex
+        retorno = re.search(regex_return, linea)
+        if retorno and funcion_con_parametros:  # Verificar que funcion_con_parametros está inicializada
+            valor_retorno = retorno.group(1).strip()
+            #añadimos el retorno a la funcion
+        # Si las llaves llegan a 0, salimos de la clase
+
+        if fin de clase:    # detectamos cuando acaba una clase
+            estamos_dentro_de_una_clase = False
+
+    # --- Formatear la salida en el formato requerido
+    clases_info = {clase: [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones]
+                   for clase, funciones in clases_y_funciones.items()}
+    funciones_info = [{'name': f['name'], 'params': f['params'], 'return': f['return']} for f in funciones_globales]
+
+    return clases_info, funciones_info
+
+
+# ---------------------------------------------------------------------------------------------------------- TESTING
+if __name__ == "__main__":
+    # Código C# con errores de sintaxis corregidos
+    codigo_csharp = """
+    public class Test {
+        public int Add(int a, int b) {
+            return a + b;
+        }
+
+        public void PrintHello() {
+            Console.WriteLine("Hello World");
+            return;  // No tiene valor de retorno
+        }
+    }
+
+    public class AnotherClass {
+        public string GetName() {
+            return "MyName";
+        }
+
+        private void Log(string message) {
+            if(a == 1) { return false; }
+            else { return true; }
+            Console.WriteLine(message);
+        }
+    }
+
+    // Esta es una función global
+    public int Multiply(int x, int y) {
+        return x * y;
+    }
+    """  # Código C# que deseas analizar
+
+    # Llamamos a la función y obtenemos los resultados
+    clases_info, funciones_info = extract_functions_and_classes(codigo_csharp)
+
+    # Mostramos los resultados
+    print("Clases y funciones encontradas:")
+    print(clases_info)
+    print("Funciones globales encontradas:")
+    print(funciones_info)
+
+    # Definir la salida esperada
+    salida_esperada_clases = {
+        'Test': [
+            {'name': 'Add', 'params': ['int a', 'int b'], 'return': 'a + b'},
+            {'name': 'PrintHello', 'params': [], 'return': ''}
+        ],
+        'AnotherClass': [
+            {'name': 'GetName', 'params': [], 'return': '"MyName"'},
+            {'name': 'Log', 'params': ['string message'], 'return': 'false; true'}
+        ]
+    }
+
+    salida_esperada_globales = [
+        {'name': 'Multiply', 'params': ['int x', 'int y'], 'return': 'x * y'}
+    ]
+
+    # Comprobamos que los resultados coincidan con la salida esperada
+    if clases_info == salida_esperada_clases and funciones_info == salida_esperada_globales:
+        print("Prueba exitosa: Los resultados son los esperados.")
+    else:
+        print("Prueba fallida: Los resultados no coinciden con lo esperado.")

@@ -35,17 +35,20 @@ namespace ContextInstaller
                 // Crear la subclave para el comando personalizado 1 (ejecutar "context" desde el PATH)
                 string comandoPersonalizado1 = @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\Shell\context";
                 Registry.SetValue(comandoPersonalizado1, "", "context");
-                Registry.SetValue(comandoPersonalizado1 + @"\command", "", @"cmd.exe /c context");
+                // Ejecutar en la carpeta donde se hizo clic derecho
+                Registry.SetValue(comandoPersonalizado1 + @"\command", "", @"cmd.exe /c cd ""%V"" && context");
 
-                // Crear la subclave para el comando personalizado 2
+                // Crear la subclave para el comando personalizado 2 (context add)
                 string comandoPersonalizado2 = @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\Shell\contextAdd";
                 Registry.SetValue(comandoPersonalizado2, "", "context add");
-                Registry.SetValue(comandoPersonalizado2 + @"\command", "", @"cmd.exe /c context add");
+                // Ejecutar en la carpeta donde se hizo clic derecho
+                Registry.SetValue(comandoPersonalizado2 + @"\command", "", @"cmd.exe /c cd ""%V"" && context add");
 
-                // Crear la subclave para el comando personalizado 3
+                // Crear la subclave para el comando personalizado 3 (context ia)
                 string comandoPersonalizado3 = @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\Shell\contextIA";
                 Registry.SetValue(comandoPersonalizado3, "", "context ia");
-                Registry.SetValue(comandoPersonalizado3 + @"\command", "", @"cmd.exe /c context ia");
+                // Ejecutar en la carpeta donde se hizo clic derecho
+                Registry.SetValue(comandoPersonalizado3 + @"\command", "", @"cmd.exe /c cd ""%V"" && context ia");
 
                 Console.WriteLine("Menú en cascada creado exitosamente con el icono incrustado.");
             }

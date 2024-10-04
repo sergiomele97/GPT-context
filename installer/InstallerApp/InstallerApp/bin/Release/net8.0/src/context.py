@@ -1,96 +1,60 @@
-import datetime
-import os
 import argparse
-import json
-import api_key_config  # Asegúrate de que este módulo esté disponible
-
-
-def init_context_repo():
-    """Initializes a new context repository in the current directory."""
-    repo_path = os.getcwd()  # Use the current directory
-    context_dir = os.path.join(repo_path, '.context')
-
-    if os.path.exists(context_dir):
-        print(f"The context repository already exists in {context_dir}.")
-        return
-
-    try:
-        # Create the repository directory and subdirectories
-        os.makedirs(context_dir, exist_ok=True)
-
-        # Create the context file with an initial empty list
-        context_file = os.path.join(context_dir, 'context.json')
-        with open(context_file, 'w') as f:
-            json.dump([], f)
-
-        print(f"Context repository initialized in {context_dir}.")
-    except Exception as e:
-        print(f"Error initializing repository: {e}")
-
-
-def add_context(prompt, response):
-    """Adds a new context to the repository."""
-    repo_path = os.getcwd()  # Use the current directory
-    context_dir = os.path.join(repo_path, '.context')
-    context_file = os.path.join(context_dir, 'context.json')
-
-    try:
-        if not os.path.exists(context_dir):
-            raise FileNotFoundError(f"The context directory does not exist in {context_dir}")
-
-        with open(context_file, 'r') as f:
-            context_data = json.load(f)
-
-        context_data.append({
-            "name": f"Prompt {len(context_data) + 1}",
-            "prompt": prompt,
-            "response": response,
-            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        })
-
-        with open(context_file, 'w') as f:
-            json.dump(context_data, f, indent=4)
-
-        print(f"Context added to {context_file}.")
-    except Exception as e:
-        print(f"Error adding context: {e}")
-
-
-def config_api_key():
-    """Executes the API key configuration."""
-    try:
-        api_key_config.execute()  # Calls the execute function from api_key_config
-        print("API key has been configured successfully.")
-    except Exception as e:
-        print(f"Error configuring API key: {e}")
-
+import os
+import summarize
+import directory  # Importa la función desde el nuevo archivo
+import file  # Asegúrate de que la función add() esté en file.py
+import gemini
 
 def main():
     parser = argparse.ArgumentParser(description="Context management tool.")
-    subparsers = parser.add_subparsers(dest='command')
-
-    # Command 'init'
-    subparsers.add_parser('init', help='Initialize a new context repository.')
-
-    # Command 'add'
-    add_parser = subparsers.add_parser('add', help='Add a new context to the repository.')
-    add_parser.add_argument('prompt', help='The prompt for the context.')
-    add_parser.add_argument('response', help='The response for the context.')
-
-    # Command 'config' for configuring API key
-    subparsers.add_parser('config', help='Configure API key.')
+    parser.add_argument('command', nargs='?', help="Type 'help' or 'h' to display help.")
+    parser.add_argument('args', nargs=argparse.REMAINDER, help="Additional arguments for commands.")
 
     args = parser.parse_args()
 
-    if args.command == 'init':
-        init_context_repo()
-    elif args.command == 'add':
-        add_context(args.prompt, args.response)
-    elif args.command == 'config':
-        config_api_key()  # Call the API key config function
-    else:
-        parser.print_help()
+    if args.command is None:
+        # Si no se especifica ningún comando
+        print("Comando 'context' ejecutado. Usa 'context help' o 'context h' para obtener ayuda.")
+        print(summarize.generate_project_context(os.getcwd()))
 
+    elif args.command in ['help', 'h']:
+        # Si el usuario pide ayuda
+        print("""
+        Sistema de Comandos Context:
+        --------------------------------
+        - 'context': Ejecuta el comando principal.
+        - 'context help' o 'context h': Muestra esta información de ayuda.
+        - 'context init': Inicializa el contexto.
+        - 'context add <ruta_archivo>': Agrega un archivo al contexto actual.
+        - 'context check': Verifica y muestra los archivos en el contexto actual.
+        - 'context ia': Genera un resumen del proyecto usando IA.
+        """)
+
+    elif args.command == 'init':
+        directory.init()  # Llama a la función importada
+
+    elif args.command == 'add':
+        if len(args.args) < 1:
+            print("Por favor proporciona la ruta del archivo que deseas añadir.")
+        else:
+            file.add(args.args[0])  # Llama a la función add en file.py
+
+    elif args.command == 'check':
+        if len(args.args) < 1: # context check => lista current context
+            print("Para listar todos los contextos: context list")
+            print("Para cambiar a un contexto o crear uno nuevo: context check #nombre_del_contexto")
+            file.check()
+        else:
+            file.change_context(args.args[0])  # context check nombre => cambio de contexto
+            file.check()
+
+    elif args.command == 'ia':
+        gemini.send("Por favor, generame un resumen del proyecto facil de leer para una persona a partir de esta informacion:" + summarize.generate_project_context(os.getcwd()))
+
+    else:
+        print(f"Comando '{args.command}' no reconocido. Usa 'context help' o 'context h' para obtener ayuda.")
+
+    input("Presiona Enter para cerrar el programa...")
 
 if __name__ == "__main__":
     main()
