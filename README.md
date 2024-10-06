@@ -1,6 +1,6 @@
 # Instal lattest officially released version:
 
-   Download [lattest-context-release.rar](https://github.com/sergiomele97/GPT-context/raw/refs/heads/main/releases/windows/lattest-context-release.rar) 
+   Download [lattest-context-release.rar](https://github.com/sergiomele97/GPT-context/raw/refs/heads/main/releases/windows/lattest-context-release.rar)  
    Open it and execute **ContextInstaller.exe**
 
 # Install lattest version:
