@@ -48,6 +48,8 @@ def main():
             file.change_context(args.args[0])  # context check nombre => cambio de contexto
             file.check()
 
+    elif args.command == 'list':
+        file.list()
     elif args.command == 'ia':
         gemini.send("Por favor, generame un resumen del proyecto facil de leer para una persona a partir de esta informacion:" + summarize.generate_project_context(os.getcwd()))
 

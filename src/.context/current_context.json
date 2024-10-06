@@ -1,6 +1,7 @@
 {
     "name": "Prueba1",
     "files": [
-        "language.py"
+        "language.py",
+        "file.py"
     ]
 }

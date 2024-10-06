@@ -150,6 +150,23 @@ def change_context(new_context_name):
     except Exception as e:
         print(f"Ocurrió un error al cambiar el contexto: {e}")
 
+def list():
+    try:
+        context_dir = locate_context()
+        all_context_dir = os.path.join(context_dir, 'all_context.json')
+        all_context_data = load_json_file(all_context_dir, default=[])
+
+        # Imprimir el listado de contextos de forma personalizada
+        print("Listado de contextos:")
+        for context in all_context_data:
+            name = context.get('name', 'sin nombre')
+            files = context.get('files', [])
+            files_list = ', '.join(files) if files else 'sin archivos'
+            print(f' - Contexto: "{name}", Contenido: Archivos: {files_list}')
+    except Exception as e:
+        print(f"Ocurrió un error al listar los contextos: {e}")
+    
+
 
 # -----------------------------------------------------------
 # Funciones de soporte
@@ -207,5 +224,5 @@ def find_or_create_context(all_contexts, new_context_name):
 # -----------------------------------------------------------
 
 if __name__ == "__main__":
-    check()
-
+    #check()
+    list()
