@@ -10,7 +10,11 @@ namespace ContextInstaller
         public static void CrearMenuCascada()
         {
             // Definir la clave donde se creará el menú en cascada
-            string claveBase = @"HKEY_CLASSES_ROOT\Directory\shell\CascadeMenu";
+            string clickDirectorio = @"HKEY_CLASSES_ROOT\Directory\shell\CascadeMenu";
+
+            string clickArchivo = @"HKEY_CLASSES_ROOT\*\Shell\CascadeMenu";
+
+            string clickFondo = @"HKEY_CLASSES_ROOT\Directory\Background\Shell\CascadeMenu";
 
             try
             {
@@ -23,14 +27,24 @@ namespace ContextInstaller
                     return;
                 }
 
-                // Crear la clave para el menú en cascada y asignar el nombre
-                Registry.SetValue(claveBase, "MUIVerb", "Context");
+                // ----------------------------  Click sobre directorio
 
-                // Agregar el icono personalizado al menú
-                Registry.SetValue(claveBase, "Icon", iconoPath);
+                // ----------------------------  Click sobre directorio
+                Registry.SetValue(clickDirectorio, "MUIVerb", "Context");
+                Registry.SetValue(clickDirectorio, "Icon", iconoPath);
+                Registry.SetValue(clickDirectorio, "SubCommands", "context;contextIA;contextCheck;contextList");
 
-                // Definir los comandos del submenú
-                Registry.SetValue(claveBase, "SubCommands", "context;contextAdd;contextIA");
+                // ------------------------------  Click sobre fondo directorio
+                Registry.SetValue(clickFondo, "MUIVerb", "Context");
+                Registry.SetValue(clickFondo, "Icon", iconoPath);
+                Registry.SetValue(clickFondo, "SubCommands", "context;contextIA;contextCheck;contextList");
+
+                // ------------------------------  Click sobre archivo
+                Registry.SetValue(clickArchivo, "MUIVerb", "Context");
+                Registry.SetValue(clickArchivo, "Icon", iconoPath);
+                Registry.SetValue(clickArchivo, "SubCommands", "contextAdd");
+
+
 
                 // Crear la subclave para el comando personalizado 1 (ejecutar "context" desde el PATH)
                 string comandoPersonalizado1 = @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\Shell\context";
@@ -41,14 +55,29 @@ namespace ContextInstaller
                 // Crear la subclave para el comando personalizado 2 (context add)
                 string comandoPersonalizado2 = @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\Shell\contextAdd";
                 Registry.SetValue(comandoPersonalizado2, "", "context add");
-                // Ejecutar en la carpeta donde se hizo clic derecho
-                Registry.SetValue(comandoPersonalizado2 + @"\command", "", @"cmd.exe /c cd ""%V"" && context add");
+
+                // Aquí pasamos %1 directamente, lo que permite que el contexto sea el archivo que se ha clicado
+                Registry.SetValue(comandoPersonalizado2 + @"\command", "", @"cmd.exe /c context add ""%1""");
+
 
                 // Crear la subclave para el comando personalizado 3 (context ia)
                 string comandoPersonalizado3 = @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\Shell\contextIA";
                 Registry.SetValue(comandoPersonalizado3, "", "context ia");
                 // Ejecutar en la carpeta donde se hizo clic derecho
                 Registry.SetValue(comandoPersonalizado3 + @"\command", "", @"cmd.exe /c cd ""%V"" && context ia");
+
+                // Crear la subclave para el comando personalizado 3 (context ia)
+                string comandoPersonalizado4 = @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\Shell\contextList";
+                Registry.SetValue(comandoPersonalizado4, "", "context list");
+                // Ejecutar en la carpeta donde se hizo clic derecho
+                Registry.SetValue(comandoPersonalizado4 + @"\command", "", @"cmd.exe /c cd ""%V"" && context list");
+
+                // Crear la subclave para el comando personalizado 3 (context ia)
+                string comandoPersonalizado5 = @"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\Shell\contextCheck";
+                Registry.SetValue(comandoPersonalizado5, "", "context check");
+                // Ejecutar en la carpeta donde se hizo clic derecho
+                Registry.SetValue(comandoPersonalizado5 + @"\command", "", @"cmd.exe /c cd ""%V"" && context check");
+
 
                 Console.WriteLine("Menú en cascada creado exitosamente con el icono incrustado.");
             }

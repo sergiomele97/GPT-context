@@ -9,10 +9,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{4F52B57D-D43A-46EF-BC1F-A10A056A2B04}|ContextInstaller\\ContextInstaller.csproj|c:\\work\\3-gpt-context\\development\\installer\\installerapp\\contextinstaller\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4F52B57D-D43A-46EF-BC1F-A10A056A2B04}|ContextInstaller\\ContextInstaller.csproj|solutionrelative:contextinstaller\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}|InstallerApp\\InstallerApp.csproj|c:\\work\\3-gpt-context\\development\\installer\\installerapp\\installerapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}|InstallerApp\\InstallerApp.csproj|solutionrelative:installerapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -40,7 +36,7 @@
               "RelativeDocumentMoniker": "ContextInstaller\\RegistroMenu.cs",
               "ToolTip": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\ContextInstaller\\RegistroMenu.cs",
               "RelativeToolTip": "ContextInstaller\\RegistroMenu.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAgwBgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACIAAAAAAAAAAAAgwDwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-04T10:02:47.537Z",
               "EditorCaption": ""
@@ -53,21 +49,9 @@
               "RelativeDocumentMoniker": "ContextInstaller\\Program.cs",
               "ToolTip": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\ContextInstaller\\Program.cs",
               "RelativeToolTip": "ContextInstaller\\Program.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAgwB8AAAAUAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAiwDAAAABLAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-04T10:02:46.713Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\Program.cs",
-              "RelativeDocumentMoniker": "InstallerApp\\Program.cs",
-              "ToolTip": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\Program.cs",
-              "RelativeToolTip": "InstallerApp\\Program.cs",
-              "ViewState": "AgIAAKAAAAAAAAAAAAAAADMAAABQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-04T09:31:03.473Z"
             }
           ]
         }
