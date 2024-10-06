@@ -14,7 +14,7 @@
    ```
 # If you want to modify the source code, generate an executable and try it on your computer:
 
-   run: 1-compile-app.bat
+   run: 1-compile-app.bat  
    then: 2-install-app.bat
 
 
