@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rlWrPti6D1Y=",
+  "dgSpecHash": "+MeC3QCFKb8=",
   "success": true,
-  "projectFilePath": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj",
+  "projectFilePath": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\1-compile-app.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Sergio\\.nuget\\packages\\costura.fody\\5.7.0\\costura.fody.5.7.0.nupkg.sha512",
     "C:\\Users\\Sergio\\.nuget\\packages\\fody\\6.8.2\\fody.6.8.2.nupkg.sha512",

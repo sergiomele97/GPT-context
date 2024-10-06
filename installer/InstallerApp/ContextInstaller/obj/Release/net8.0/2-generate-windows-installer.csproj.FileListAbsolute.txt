@@ -1,0 +1,15 @@
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\bin\Release\net8.0\2-generate-windows-installer.exe
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\bin\Release\net8.0\2-generate-windows-installer.deps.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\bin\Release\net8.0\2-generate-windows-installer.runtimeconfig.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\bin\Release\net8.0\2-generate-windows-installer.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\bin\Release\net8.0\2-generate-windows-installer.pdb
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\2-generate-windows-installer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\2-generate-windows-installer.AssemblyInfoInputs.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\2-generate-windows-installer.AssemblyInfo.cs
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\2-generate-windows-installer.csproj.CoreCompileInputs.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\2-generate-windows-installer.sourcelink.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\2-generate-windows-installer.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\refint\2-generate-windows-installer.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\2-generate-windows-installer.pdb
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\2-generate-windows-installer.genruntimeconfig.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\ContextInstaller\obj\Release\net8.0\ref\2-generate-windows-installer.dll

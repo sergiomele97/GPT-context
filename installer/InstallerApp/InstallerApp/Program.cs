@@ -13,13 +13,16 @@
             {
                 // Directorio base del repositorio (donde se encuentra el ejecutable del instalador)
                 string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                Console.WriteLine(baseDirectory);
+
+                // Construir la ruta hacia seis directorios atrás usando ../
+                string relativePath = @"..\..\..\..\..\..\";
+                string targetDirectory = Path.GetFullPath(Path.Combine(baseDirectory, relativePath));
 
                 // Directorio del entorno virtual
                 string venvPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "myenv");
 
                 // Ruta del script Python en relación con el directorio base del repositorio
-                string scriptPath = Path.Combine(baseDirectory, "src", "context.py");
+                string scriptPath = Path.Combine(targetDirectory, "src", "context.py");
 
                 // Ruta del directorio de instalación
                 string installDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "GPT-context");
@@ -89,25 +92,38 @@
                     throw new FileNotFoundException("No se encontró el archivo ejecutable generado por PyInstaller.");
                 }
 
-                // Crear directorio de instalación
-                if (!Directory.Exists(installDir))
+                // Mueve el archivo a la nueva carpeta
+                Console.WriteLine("Moviendo ejecutable a la carpeta del instalador...");
+
+                string destinoDir = "../../../../ContextInstaller";
+                try
                 {
-                    Console.WriteLine("Creando directorio de instalación...");
-                    Directory.CreateDirectory(installDir);
+                    // Asegúrate de que la carpeta de destino existe
+                    if (!Directory.Exists(destinoDir))
+                    {
+                        Directory.CreateDirectory(destinoDir);
+                    }
+
+                    // Ruta completa del nuevo archivo
+                    string nuevoExePath = Path.Combine(destinoDir, "context.exe");
+
+                    // Elimina el archivo existente si existe
+                    if (File.Exists(nuevoExePath))
+                    {
+                        File.Delete(nuevoExePath);
+                    }
+
+                    // Mueve el archivo
+                    File.Move(exePath, nuevoExePath);
+                    Console.WriteLine("El archivo se ha movido correctamente a " + nuevoExePath);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Se produjo un error al mover el archivo: " + ex.Message);
                 }
 
-                Console.WriteLine("Moviendo el ejecutable...");
-                // Mover el ejecutable
-                string destExePath = Path.Combine(installDir, "context.exe");
-                File.Copy(exePath, destExePath, true);
 
-                Console.WriteLine("Añadiendo al PATH...");
-                // Añadir al PATH
-                AddToPath(installDir);
-
-                // Final bueno
-                Console.WriteLine("\nInstalación completada con éxito!\n");
-                Exito();
+                Console.WriteLine("\nCompilación completada con éxito!\n");
                 Console.WriteLine("\nPresiona cualquier tecla para salir...");
                 Console.ReadKey();
             }
@@ -326,10 +342,6 @@
             Console.WriteLine("Python instalado correctamente.");
         }
 
-        static void Exito()
-        {
-            Console.WriteLine("¡Instalación completada con éxito!");
-        }
     }
 }
 

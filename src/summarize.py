@@ -1,6 +1,5 @@
 import os
 import language
-import pyperclip
 from colorama import init, Fore
 
 

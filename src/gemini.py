@@ -1,7 +1,6 @@
 import os
 
 import google.generativeai as genai
-import pyperclip
 from colorama import Fore
 
 import secrets

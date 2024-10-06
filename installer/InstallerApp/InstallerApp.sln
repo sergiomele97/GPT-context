@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstallerApp", "InstallerApp\InstallerApp.csproj", "{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1-compile-app", "InstallerApp\1-compile-app.csproj", "{7EBDFCEF-6C28-4099-B223-BE7325E0CA28}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContextInstaller", "ContextInstaller\ContextInstaller.csproj", "{4F52B57D-D43A-46EF-BC1F-A10A056A2B04}"
 EndProject

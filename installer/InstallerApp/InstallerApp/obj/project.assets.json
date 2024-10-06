@@ -4651,9 +4651,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj",
-      "projectName": "InstallerApp",
-      "projectPath": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\InstallerApp.csproj",
+      "projectUniqueName": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\1-compile-app.csproj",
+      "projectName": "1-compile-app",
+      "projectPath": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\1-compile-app.csproj",
       "packagesPath": "C:\\Users\\Sergio\\.nuget\\packages\\",
       "outputPath": "C:\\Work\\3-GPT-context\\Development\\installer\\InstallerApp\\InstallerApp\\obj\\",
       "projectStyle": "PackageReference",

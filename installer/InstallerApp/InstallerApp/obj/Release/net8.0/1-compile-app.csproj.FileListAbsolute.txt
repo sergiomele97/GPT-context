@@ -1,0 +1,17 @@
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\bin\Release\net8.0\1-compile-app.exe
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\bin\Release\net8.0\1-compile-app.deps.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\bin\Release\net8.0\1-compile-app.runtimeconfig.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\bin\Release\net8.0\1-compile-app.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\bin\Release\net8.0\1-compile-app.pdb
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\1-compile-app.GeneratedMSBuildEditorConfig.editorconfig
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\1-compile-app.AssemblyInfoInputs.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\1-compile-app.AssemblyInfo.cs
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\1-compile-app.csproj.CoreCompileInputs.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\1-compile-app.sourcelink.json
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\1-compile-app.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\refint\1-compile-app.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\1-compile-app.pdb
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\1-compile-app.genruntimeconfig.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\ref\1-compile-app.dll
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\1-compile-app.csproj.Fody.CopyLocal.cache
+C:\Work\3-GPT-context\Development\installer\InstallerApp\InstallerApp\obj\Release\net8.0\1-compile-app.csproj.Fody.RuntimeCopyLocal.cache
