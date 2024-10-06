@@ -1,6 +1,8 @@
 import os
 import json
 
+from colorama import Fore
+
 
 # -----------------------------------------------------------
 # Función init:
@@ -28,9 +30,9 @@ def init():
             create_json(json_all_file_path, 0)
             create_json(json_current_file_path, 1)
 
-            print(f"Contexto inicializado. Carpeta creada en: {context_dir}")
-            print(f"Archivo JSON creado en: {json_all_file_path}")
-            print(f"Archivo JSON creado en: {json_current_file_path}")
+            print(f"{Fore.GREEN}Contexto inicializado. Carpeta creada en: {context_dir}")
+            print(f"{Fore.GREEN}Archivo JSON creado en: {json_all_file_path}")
+            print(f"{Fore.GREEN}Archivo JSON creado en: {json_current_file_path}")
 
     except Exception as e:
         print(f"Ocurrió un error al inicializar el contexto: {e}")

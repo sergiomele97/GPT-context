@@ -1,6 +1,9 @@
 import os
 
 import google.generativeai as genai
+import pyperclip
+from colorama import Fore
+
 import secrets
 import summarize
 
@@ -12,7 +15,11 @@ def send(prompt):
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(prompt)
+        # Imprimir resultado OK
         print(response.text)
+        pyperclip.copy(response.text)
+        print(
+            f"{Fore.GREEN}=================================================> Summary copied to clipboard \u2705")
         return response.text
 
     except Exception as e:

@@ -1,5 +1,7 @@
 import os
 import language
+import pyperclip
+from colorama import init, Fore
 
 
 def read_code_files(directory):
@@ -36,6 +38,7 @@ def generate_summary(code_files):
 
 
 def generate_project_context(directory):
+    init(autoreset=True)
     print(f"Generando contexto para el proyecto a partir del directorio {directory}\n")
     print(f"(Si esto tarda demasiado puede que se este analizando alguna carpeta de modulos o entorno virtual por error, trata de excluir directorios pesados)\n\n")
     code_files = read_code_files(directory)
@@ -76,14 +79,16 @@ def generate_project_context(directory):
 
     # Controlar el tamaño del contexto
     context += f"\nNúmero de tokens estimados: {len(context.split())}"
-
+    print(context)
+    pyperclip.copy(context)
+    print(f"{Fore.GREEN}=================================================> Context copied to clipboard \u2705")
     return context
 
 
 if __name__ == "__main__":
-    directory = r"C:\Work\3-GPT-context\src"  # Cambia a la ruta del directorio de tu proyecto
+    directory = r"C:/Work/3-GPT-context/Development/src"  # Cambia a la ruta del directorio de tu proyecto
 
-    project_context = generate_project_context(directory)
-    print(project_context)
+    generate_project_context(directory)
+
 
 

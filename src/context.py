@@ -15,7 +15,7 @@ def main():
     if args.command is None:
         # Si no se especifica ningún comando
         print("Comando 'context' ejecutado. Usa 'context help' o 'context h' para obtener ayuda.")
-        print(summarize.generate_project_context(os.getcwd()))
+        summarize.generate_project_context(os.getcwd())
 
     elif args.command in ['help', 'h']:
         # Si el usuario pide ayuda

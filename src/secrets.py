@@ -1,5 +1,7 @@
 import os
 import getpass
+
+from colorama import Fore
 from cryptography.fernet import Fernet
 import base64
 import hashlib
@@ -62,7 +64,7 @@ def save_encrypted_api_key(encrypted_key):
     with open(file_path, 'wb') as file:
         file.write(encrypted_key)
 
-    print("API key configurada.")
+    print(f"{Fore.GREEN}API key configurada.")
 
 
 def load_encrypted_api_key():
