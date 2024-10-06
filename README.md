@@ -1,13 +1,9 @@
 # Instal lattest officially released version:
-   ```cmd
-   @echo off
-   :: Descargar el archivo .rar
-   curl -L -o lattest-context-release.rar https://github.com/sergiomele97/GPT-context/releases/download/windows/lattest-context-release.rar
 
-   :: Extraer y ejecutar ContextInstaller.exe (asegúrate de que WinRAR o 7-Zip esté instalado)
-   "c:\Program Files\WinRAR\WinRAR.exe" x -o+ "lattest-context-release.rar" && start "" "ContextInstaller.exe"
-   ```
-# Install lattest changes:
+   [Download lattest-context-release.rar](https://github.com/sergiomele97/GPT-context/raw/refs/heads/main/releases/windows/lattest-context-release.rar)
+   Open it and execute ContextInstaller.exe
+
+# Install lattest version:
 
    ```cmd
    git clone https://github.com/sergiomele97/GPT-context.git
