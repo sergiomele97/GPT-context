@@ -22,4 +22,4 @@
    **Note:** If you don't have Git, you can either install it or download the ZIP from the green button on GitHub, unzip it, and run 1-compile-app.bat as an administrator.
 
 # If you want to generate a new working installator:
-You must compile the ContextInstaller application (Otherwise the new pyinstaller .exe wouldn't be incrusted in the c# installator.
+You must compile the ContextInstaller application (Otherwise the new pyinstaller .exe wouldn't be incrusted in the c# installator).
