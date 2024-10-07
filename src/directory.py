@@ -1,106 +1,101 @@
 import os
 import json
-
 from colorama import Fore
 
+from contextignore import create_contextignore
+
 
 # -----------------------------------------------------------
-# Función init:
-# Inicializa el contexto creando una carpeta .context y un
-# archivo context.json con información sobre contextos
-# personalizados. Si la carpeta ya existe, se informará al
-# usuario y no se realizarán cambios adicionales.
+# init function:
+# Initializes the context by creating a .context folder and a
+# context.json file with information about custom contexts.
+# If the folder already exists, the user will be informed and
+# no further changes will be made.
 # -----------------------------------------------------------
-def init():
+def init(target_directory):
     try:
-        # Lógica para inicializar el contexto
-        print("Inicializando el contexto...")
+        # Logic to initialize the context
+        print("Initializing context...")
 
-        # Definir la ruta para la carpeta .context y el archivo context.json
-        context_dir = os.path.join(os.getcwd(), '.context')
+        # Define the path for the .context folder and the context.json file
+        context_dir = os.path.join(target_directory, '.context')
         json_all_file_path = os.path.join(context_dir, 'all_context.json')
         json_current_file_path = os.path.join(context_dir, 'current_context.json')
+        contextignore_path = os.path.join(context_dir, '.contextignore')
 
-        # Verificar si la carpeta .context ya existe
+        # Check if the .context folder already exists
         if os.path.exists(context_dir):
-            print(f"La carpeta '.context' ya existe en: {context_dir}")
+            print(f"The folder '.context' already exists at: {context_dir}")
         else:
-            # Crear la carpeta .context si no existe
+            # Create the .context folder if it doesn't exist
             os.makedirs(context_dir)
             create_json(json_all_file_path, 0)
             create_json(json_current_file_path, 1)
+            create_contextignore(contextignore_path)
 
-            print(f"{Fore.GREEN}Contexto inicializado. Carpeta creada en: {context_dir}")
-            print(f"{Fore.GREEN}Archivo JSON creado en: {json_all_file_path}")
-            print(f"{Fore.GREEN}Archivo JSON creado en: {json_current_file_path}")
+            print(f"{Fore.GREEN}Context initialized. Folder created at: {context_dir}")
+            print(f"{Fore.GREEN}JSON file created at: {json_all_file_path}")
+            print(f"{Fore.GREEN}JSON file created at: {json_current_file_path}")
+            print(f"{Fore.GREEN}File .contextignore created at: {contextignore_path}")
 
     except Exception as e:
-        print(f"Ocurrió un error al inicializar el contexto: {e}")
+        print(f"An error occurred while initializing the context: {e}")
 
 
 # -----------------------------------------------------------
-# Función locate_context:
-# Busca la carpeta .context en el directorio actual y sus
-# padres. Si no la encuentra, busca en la carpeta global
-# C:\Program Files\GPT-context. Crea la carpeta global si
-# no existe y devuelve la ruta correspondiente.
+# locate_context function:
+# Searches for the .context folder in the current directory and its
+# parent directories. If it is not found, it searches in the global
+# folder C:\Program Files\GPT-context. Creates the global folder if
+# it doesn't exist and returns the corresponding path.
 # -----------------------------------------------------------
 def locate_context():
-    # Definir la ruta global donde debe estar el contexto predeterminado
+    # Define the global path where the default context should be
     global_context_dir = os.path.join(os.path.expanduser('~'), '.context')
 
-    # Comenzar desde el directorio actual
+    # Start from the current directory
     current_dir = os.getcwd()
 
     while True:
-        # Definir la ruta para la carpeta .context en el directorio actual
+        # Define the path for the .context folder in the current directory
         context_dir = os.path.join(current_dir, '.context')
 
         try:
-            # Verificar si la carpeta .context existe en el directorio actual
+            # Check if the .context folder exists in the current directory
             if os.path.exists(context_dir):
-                print(f"Contexto local encontrado en: {context_dir}")
+                print(f"Local context found at: {context_dir}")
                 return context_dir
         except Exception as e:
-            print(f"Ocurrió un error al verificar el contexto local: {e}")
-            return None  # Retornar None para indicar un fallo
+            print(f"An error occurred while checking the local context: {e}")
+            return None  # Return None to indicate failure
 
-        # Subir un nivel en el directorio padre
+        # Move up one level in the parent directory
         parent_dir = os.path.dirname(current_dir)
 
-        # Si hemos llegado al directorio raíz, salir del bucle
+        # If we have reached the root directory, exit the loop
         if parent_dir == current_dir:
             break
 
         current_dir = parent_dir
 
-    # Si no se encontró contexto local, verificar el contexto global
+    # If no local context was found, check the global context
     try:
         if not os.path.exists(global_context_dir):
-            os.makedirs(global_context_dir)
-            print(f"Contexto global creado en: {global_context_dir}")
-
-            json_all_file_path = os.path.join(global_context_dir, 'all_context.json')
-            create_json(json_all_file_path, 0)
-            print(f"Archivo JSON creado en: {json_all_file_path}")
-
-            json_current_file_path = os.path.join(global_context_dir, 'current_context.json')
-            create_json(json_current_file_path, 1)
-            print(f"Archivo JSON creado en: {json_current_file_path}")
+            init(os.path.expanduser('~'))
 
     except Exception as e:
-        print(f"Ocurrió un error al crear el contexto global: {e}")
+        print(f"An error occurred while creating the global context: {e}")
 
-    print(f"Usando contexto global en: {global_context_dir}")
+    print(f"Using global context at: {global_context_dir}")
     return global_context_dir
 
 
 # -----------------------------------------------------------
-# Función create_json:
-# Crear un archivo context.json estandar dentro de la carpeta .context
+# create_json function:
+# Creates a standard context.json file inside the .context folder
 # -----------------------------------------------------------
 def create_json(json_file_path, context_number):
-    # Definir diferentes contextos según el número
+    # Define different contexts based on the number
     if context_number == 1:
         context_data = \
         {
@@ -110,7 +105,7 @@ def create_json(json_file_path, context_number):
                 ]
         }
     else:
-        # Valor por defecto: Una lista de objetos context
+        # Default value: A list of context objects
         context_data =  [
         {
             "name": "default",
@@ -120,7 +115,7 @@ def create_json(json_file_path, context_number):
         }
     ]
 
-    # Guardar los contextos en el archivo JSON
+    # Save the contexts to the JSON file
     with open(json_file_path, 'w') as json_file:
         json.dump(context_data, json_file, indent=4)
 
@@ -129,5 +124,5 @@ def create_json(json_file_path, context_number):
 # Testing
 # -----------------------------------------------------------
 if __name__ == "__main__":
-    init()
+    init(os.getcwd())
     locate_context()

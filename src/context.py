@@ -1,8 +1,8 @@
 import argparse
 import os
 import summarize
-import directory  # Importa la función desde el nuevo archivo
-import file  # Asegúrate de que la función add() esté en file.py
+import directory  # Import the function from the new file
+import file  # Make sure the add() function is in file.py
 import gemini
 
 def main():
@@ -13,50 +13,50 @@ def main():
     args = parser.parse_args()
 
     if args.command is None:
-        # Si no se especifica ningún comando
-        print("Comando 'context' ejecutado. Usa 'context help' o 'context h' para obtener ayuda.")
+        # If no command is specified
+        print("Command 'context' executed. Use 'context help' or 'context h' for assistance.")
         summarize.generate_project_context(os.getcwd())
 
     elif args.command in ['help', 'h']:
-        # Si el usuario pide ayuda
+        # If the user requests help
         print("""
-        Sistema de Comandos Context:
+        Context Command System:
         --------------------------------
-        - 'context': Ejecuta el comando principal.
-        - 'context help' o 'context h': Muestra esta información de ayuda.
-        - 'context init': Inicializa el contexto.
-        - 'context add <ruta_archivo>': Agrega un archivo al contexto actual.
-        - 'context check': Verifica y muestra los archivos en el contexto actual.
-        - 'context ia': Genera un resumen del proyecto usando IA.
+        - 'context': Executes the main command.
+        - 'context help' or 'context h': Displays this help information.
+        - 'context init': Initializes the context.
+        - 'context add <file_path>': Adds a file to the current context.
+        - 'context check': Verifies and shows the files in the current context.
+        - 'context ia': Generates a project summary using AI.
         """)
 
     elif args.command == 'init':
-        directory.init()  # Llama a la función importada
+        directory.init(os.getcwd())  # Calls the imported function
 
     elif args.command == 'add':
         if len(args.args) < 1:
-            print("Por favor proporciona la ruta del archivo que deseas añadir.")
+            print("Please provide the path of the file you want to add.")
         else:
-            file.add(args.args[0])  # Llama a la función add en file.py
+            file.add(args.args[0])  # Calls the add function in file.py
 
     elif args.command == 'check':
-        if len(args.args) < 1: # context check => lista current context
-            print("Para listar todos los contextos: context list")
-            print("Para cambiar a un contexto o crear uno nuevo: context check #nombre_del_contexto")
+        if len(args.args) < 1:  # context check => list current context
+            print("To list all contexts: context list")
+            print("To switch to a context or create a new one: context check #context_name")
             file.check()
         else:
-            file.change_context(args.args[0])  # context check nombre => cambio de contexto
+            file.change_context(args.args[0])  # context check name => change context
             file.check()
 
     elif args.command == 'list':
         file.list()
     elif args.command == 'ia':
-        gemini.send("Por favor, generame un resumen del proyecto facil de leer para una persona a partir de esta informacion:" + summarize.generate_project_context(os.getcwd()))
+        gemini.send("Please generate an easy-to-read project summary for a person based on this information: " + summarize.generate_project_context(os.getcwd()))
 
     else:
-        print(f"Comando '{args.command}' no reconocido. Usa 'context help' o 'context h' para obtener ayuda.")
+        print(f"Command '{args.command}' not recognized. Use 'context help' or 'context h' for assistance.")
 
-    input("Presiona Enter para cerrar el programa...")
+    input("Press Enter to close the program...")
 
 if __name__ == "__main__":
     main()

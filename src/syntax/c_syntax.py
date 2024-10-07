@@ -1,13 +1,13 @@
 import re
 
 def extract_info(codigo_c):
-    # --------------------------------------------------------------------------------------------------- Parámetros
+    # --------------------------------------------------------------------------------------------------- Parameters
 
     # ---REGEX---------
-    # C no tiene clases, así que eliminamos el análisis de clases
+    # C does not have classes, so we remove class analysis
     regex_funciones = r'([a-zA-Z_][a-zA-Z0-9_*\s]*?)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(([^)]*)\)\s*\{'
-    regex_return = r'return\s+([^;]+);'  # Capturar el valor después del 'return'
-    regex_imports = r'^\s*#include\s*<([^>]+)>'  # Capturar imports de bibliotecas
+    regex_return = r'return\s+([^;]+);'  # Capture the value after 'return'
+    regex_imports = r'^\s*#include\s*<([^>]+)>'  # Capture library imports
 
     # ---OUTPUT--------
     funciones_globales = []
@@ -16,45 +16,45 @@ def extract_info(codigo_c):
     # ---VARIABLES-----
     funcion_con_parametros = None
 
-    # ------------------------------------------------------------------------------------------ Lectura línea a línea
+    # ------------------------------------------------------------------------------------------ Read line by line
     lineas = codigo_c.splitlines()
 
     for linea in lineas:
-        # ------------------------------------ Buscar imports
+        # ------------------------------------ Search for imports
         importacion = re.search(regex_imports, linea)
         if importacion:
-            imports_globales.append(importacion.group(1).strip())  # Almacena el nombre del archivo importado
+            imports_globales.append(importacion.group(1).strip())  # Store the name of the imported file
 
-        # ------------------------------------ Buscar funciones
+        # ------------------------------------ Search for functions
         funcion = re.search(regex_funciones, linea)
         if funcion:
-            tipo_retorno = funcion.group(1).strip()  # Captura el tipo de retorno
-            nombre_funcion = funcion.group(2).strip()  # Captura el nombre de la función
-            parametros = funcion.group(3).split(',') if funcion.group(3).strip() else []  # Captura los parámetros
-            parametros = [param.strip() for param in parametros]  # Limpiar espacios
+            tipo_retorno = funcion.group(1).strip()  # Capture the return type
+            nombre_funcion = funcion.group(2).strip()  # Capture the function name
+            parametros = funcion.group(3).split(',') if funcion.group(3).strip() else []  # Capture parameters
+            parametros = [param.strip() for param in parametros]  # Clean spaces
             funcion_con_parametros = {'name': nombre_funcion, 'params': parametros, 'return_type': tipo_retorno, 'return': ''}
 
-            # Guardamos la función globalmente
+            # Store the function globally
             funciones_globales.append(funcion_con_parametros)
 
-        # ------------------------------------ Buscar return usando regex
+        # ------------------------------------ Search for return using regex
         retorno = re.search(regex_return, linea)
-        if retorno and funcion_con_parametros:  # Verificar que funcion_con_parametros está inicializada
+        if retorno and funcion_con_parametros:  # Check that funcion_con_parametros is initialized
             valor_retorno = retorno.group(1).strip()
             if funcion_con_parametros['return']:
-                funcion_con_parametros['return'] += f"; {valor_retorno}"  # Añadir con separación
+                funcion_con_parametros['return'] += f"; {valor_retorno}"  # Add with separation
             else:
-                funcion_con_parametros['return'] = valor_retorno  # Almacenar solo el valor de retorno
+                funcion_con_parametros['return'] = valor_retorno  # Store only the return value
 
-    # --- Formatear la salida en el formato requerido
+    # --- Format the output in the required format
     funciones_info = [{'name': f['name'], 'params': f['params'], 'return_type': f['return_type'], 'return': f['return']} for f in funciones_globales]
 
-    return {'imports': imports_globales, 'classes': [], 'functions': funciones_info}  # Retorna imports, clases (vacía) y funciones
+    return {'imports': imports_globales, 'classes': [], 'functions': funciones_info}  # Returns imports, classes (empty), and functions
 
 
 # ---------------------------------------------------------------------------------------------------------- TESTING
 if __name__ == "__main__":
-    # Código C de ejemplo
+    # Example C code
     codigo_c = """
     #include <stdio.h>
     #include <stdlib.h>
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     }
 
     void imprimeMensaje() {
-        printf("Hola Mundo");
+        printf("Hello World");
         return;
     }
 
@@ -74,18 +74,18 @@ if __name__ == "__main__":
     }
     """
 
-    # Llamamos a la función y obtenemos los resultados
+    # Call the function and get the results
     resultados = extract_info(codigo_c)
 
-    # Mostramos los resultados
-    print("Imports encontrados:")
+    # Display the results
+    print("Imports found:")
     print(resultados['imports'])
-    print("Clases encontradas (vacía):")
+    print("Classes found (empty):")
     print(resultados['classes'])
-    print("Funciones globales encontradas:")
+    print("Global functions found:")
     print(resultados['functions'])
 
-    # Definir la salida esperada
+    # Define the expected output
     salida_esperada_globales = [
         {'name': 'suma', 'params': ['int a', 'int b'], 'return_type': 'int', 'return': 'a + b'},
         {'name': 'imprimeMensaje', 'params': [], 'return_type': 'void', 'return': ''},
@@ -93,8 +93,8 @@ if __name__ == "__main__":
     ]
     salida_esperada_imports = ['stdio.h', 'stdlib.h']
 
-    # Comprobamos que los resultados coincidan con la salida esperada
+    # Check that the results match the expected output
     if resultados['functions'] == salida_esperada_globales and resultados['imports'] == salida_esperada_imports:
-        print("Prueba exitosa: Los resultados son los esperados.")
+        print("Test successful: The results are as expected.")
     else:
-        print("Prueba fallida: Los resultados no coinciden con lo esperado.")
+        print("Test failed: The results do not match the expected output.")

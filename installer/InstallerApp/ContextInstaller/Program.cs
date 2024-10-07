@@ -25,11 +25,27 @@ namespace ContextInstaller
                     Directory.CreateDirectory(installDir);
                 }
 
-                // Extraer el archivo .exe desde los recursos
+                // Mover el ejecutable
                 string exeName = "context.exe"; // Nombre del ejecutable
-                string resourceName = "ContextInstaller.context.exe"; // Nombre completo del recurso
-                string destExePath = Path.Combine(installDir, exeName);
-                ExtractResource(resourceName, destExePath);
+                string destExePath = Path.Combine(installDir, exeName); // Nombre destino
+
+                if (File.Exists("../../../context.exe")) // Instalación desde el repositorio (Development)
+                {
+                    // Verifica si el archivo ya existe en el destino y lo elimina si es necesario
+                    if (File.Exists(destExePath))
+                    {
+                        File.Delete(destExePath); // Elimina el archivo en destino si ya existe
+                    }
+
+                    // Mover el ejecutable desde la ubicación del repositorio a la ruta de instalación
+                    File.Copy("../../../context.exe", destExePath);
+                }
+                else // Instalación desde zip
+                {
+                    // Extraer el archivo .exe desde los recursos
+                    string resourceName = "ContextInstaller.context.exe";
+                    ExtractResource(resourceName, destExePath);
+                }
 
                 Console.WriteLine("Moviendo el ejecutable...");
                 Console.WriteLine($"Ejecutable extraído a: {destExePath}");

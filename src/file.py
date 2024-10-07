@@ -1,132 +1,131 @@
 import os
 import re
 import json
-
 import pyperclip
 from colorama import Fore
 
-from directory import locate_context  # Asegúrate de que esta función esté en directory.py
+from directory import locate_context  # Ensure this function is in directory.py
 
 
 # -----------------------------------------------------------
-# Función add:
-# Añade un archivo al contexto actual.
+# Function add:
+# Adds a file to the current context.
 # -----------------------------------------------------------
 def add(file_path):
     try:
-        # Obtener contexto actual
+        # Get current context
         context_dir, current_context_file, context_data = get_current_context()
         if not context_data:
-            print(f"No se encontró el archivo {current_context_file} o está vacío.")
+            print(f"No file found {current_context_file} or it is empty.")
             return
 
-        # Obtener la ruta correcta del archivo a añadir
+        # Get the correct path of the file to add
         global_context_dir = os.path.join(os.path.expanduser('~'), 'GPT-context', '.context')
-        file_to_add = os.path.abspath(file_path) if context_dir == global_context_dir else os.path.relpath(file_path, start=os.path.dirname(context_dir))
+        file_to_add = os.path.abspath(file_path) if context_dir == global_context_dir else os.path.relpath(file_path,
+                                                                                                           start=os.path.dirname(
+                                                                                                               context_dir))
 
-        # Verificar si el archivo ya está en la lista
+        # Check if the file is already in the list
         if file_to_add in context_data.get('files', []):
-            print(f"El archivo ya está añadido: {file_path}.")
+            print(f"The file is already added: {file_path}.")
             return
 
-        # Añadir el archivo a la lista y guardar los cambios
+        # Add the file to the list and save changes
         context_data.setdefault('files', []).append(file_to_add)
         save_json_file(current_context_file, context_data)
 
         print(f"{Fore.GREEN}====================> File {file_path} added correctly to current context \u2705")
 
     except Exception as e:
-        print(f"Ocurrió un error al añadir el archivo: {e}")
+        print(f"An error occurred while adding the file: {e}")
 
 
 # -----------------------------------------------------------
-# Función check:
-# Genera el contexto actual (nombre, archivos y contenido).
+# Function check:
+# Generates the current context (name, files, and content).
 # -----------------------------------------------------------
 def check():
     clipboard = ""
     try:
-        # Obtener contexto actual
+        # Get current context
         context_dir, current_context_file, context_data = get_current_context()
         if not context_data:
-            print(f"No se encontró el archivo {current_context_file} o está vacío.")
+            print(f"No file found {current_context_file} or it is empty.")
             return
 
-        # Obtener el nombre del contexto
+        # Get the name of the context
         context_name = context_data.get('name', None)
         if not context_name:
-            print("El contexto actual no tiene un nombre definido.")
+            print("The current context does not have a defined name.")
             return
 
+        clipboard += f"Current context: {context_name}\n"
 
-
-        clipboard += f"Contexto actual: {context_name}\n"
-
-        # Concatenar el texto a la variable
-        clipboard += "Archivos en el contexto:\n"
+        # Concatenate the text to the variable
+        clipboard += "Files in the context:\n"
         for file_name in context_data.get('files', []):
             clipboard += f"- {file_name}\n"
             try:
-                # Ruta correcta del archivo
+                # Correct path of the file
                 full_path = os.path.abspath(os.path.join(os.path.dirname(context_dir), file_name))
 
-                # Leer el contenido del archivo
+                # Read the content of the file
                 with open(full_path, 'r') as file:
                     content = file.read()
 
-                    # Llamar al método para extraer los fragmentos delimitados
+                    # Call the method to extract the delimited fragments
                     fragments = extract_fragments(content, context_name)
 
-                    # Si no se encuentran fragmentos, mostrar el archivo completo
+                    # If no fragments are found, display the full file
                     if not fragments:
                         clipboard += (
-                            f"No se encontraron fragmentos específicos para el contexto '{context_name}' en {file_name}. "
-                            f"Mostrando el archivo completo:\n{content}\n")
+                            f"No specific fragments found for the context '{context_name}' in {file_name}. "
+                            f"Displaying the full file:\n{content}\n")
                     else:
-                        # Mostrar cada fragmento extraído
+                        # Display each extracted fragment
                         for fragment in fragments:
                             clipboard += (
-                                f"Fragmento de {file_name} para el contexto '{context_name}':\n{fragment}\n")
+                                f"Fragment from {file_name} for the context '{context_name}':\n{fragment}\n")
 
             except Exception as e:
-                print(f"No se pudo leer el archivo {file_name}: {e}\n")
+                print(f"Could not read file {file_name}: {e}\n")
 
         print(clipboard)
         pyperclip.copy(clipboard)
         print(f"{Fore.GREEN}=================================================> Context copied to clipboard \u2705")
 
     except Exception as e:
-        print(f"Ocurrió un error al verificar el contexto: {e}\n")
+        print(f"An error occurred while checking the context: {e}\n")
 
 
 def extract_fragments(content, context_name):
     """
-    Extrae todos los fragmentos delimitados por CONTEXT_<context_name>_START y CONTEXT_<context_name>_END.
+    Extracts all fragments delimited by CONTEXT_<context_name>_START and CONTEXT_<context_name>_END.
 
     Args:
-    - content: El contenido del archivo.
-    - context_name: El nombre del contexto que se usa para encontrar las etiquetas.
+    - content: The content of the file.
+    - context_name: The name of the context used to find the tags.
 
     Returns:
-    - Una lista de fragmentos extraídos entre las etiquetas de inicio y fin.
+    - A list of fragments extracted between the start and end tags.
     """
-    # Etiquetas de inicio y fin
+    # Start and end tags
     start_tag = f"CONTEXT_{context_name}_START"
     end_tag = f"CONTEXT_{context_name}_END"
 
-    # Encontrar todas las posiciones de inicio y fin de los fragmentos
+    # Find all start and end positions of the fragments
     start_positions = [match.end() for match in re.finditer(start_tag, content)]
     end_positions = [match.start() for match in re.finditer(end_tag, content)]
 
-    # Si no hay posiciones de inicio, devolver una lista vacía
+    # If there are no start positions, return an empty list
     if not start_positions:
         return []
 
-    # Asegurarnos de que haya suficientes etiquetas de fin, si no, extendemos hasta el final
+    # Ensure there are enough end tags; if not, extend to the end
     if len(end_positions) < len(start_positions):
-        end_positions.append(len(content))  # Añadir el final del archivo como último posible fin
+        end_positions.append(len(content))  # Add the end of the file as the last possible end
 
-    # Extraer los fragmentos entre cada par de etiquetas
+    # Extract the fragments between each pair of tags
     fragments = []
     for start_idx, end_idx in zip(start_positions, end_positions):
         fragment = content[start_idx:end_idx].strip()
@@ -136,32 +135,33 @@ def extract_fragments(content, context_name):
 
 
 # -----------------------------------------------------------
-# Función change_context:
-# Cambia el contexto actual al especificado. Antes de cambiar,
-# guarda el contexto actual en all_context.json.
+# Function change_context:
+# Changes the current context to the specified one. Before changing,
+# it saves the current context in all_context.json.
 # -----------------------------------------------------------
 def change_context(new_context_name):
     try:
-        # Obtener contexto actual
+        # Get current context
         context_dir, current_context_file, current_context = get_current_context()
         all_contexts_file = os.path.join(context_dir, 'all_context.json')
         all_contexts = load_json_file(all_contexts_file, default=[])
 
-        # Guardar el contexto actual en all_context.json
+        # Save the current context in all_context.json
         if current_context:
             update_all_contexts(all_contexts, current_context)
             save_json_file(all_contexts_file, all_contexts)
 
-        # Encontrar o crear el nuevo contexto
+        # Find or create the new context
         new_context = find_or_create_context(all_contexts, new_context_name)
 
-        # Guardar el nuevo contexto en current_context.json
+        # Save the new context in current_context.json
         save_json_file(current_context_file, new_context)
 
-        print(f"Cambiado al contexto '{new_context_name}'.")
+        print(f"Changed to context '{new_context_name}'.")
 
     except Exception as e:
-        print(f"Ocurrió un error al cambiar el contexto: {e}")
+        print(f"An error occurred while changing the context: {e}")
+
 
 def list():
     try:
@@ -169,20 +169,19 @@ def list():
         all_context_dir = os.path.join(context_dir, 'all_context.json')
         all_context_data = load_json_file(all_context_dir, default=[])
 
-        # Imprimir el listado de contextos de forma personalizada
-        print("Listado de contextos:")
+        # Print the listing of contexts in a custom format
+        print("List of contexts:")
         for context in all_context_data:
-            name = context.get('name', 'sin nombre')
+            name = context.get('name', 'unnamed')
             files = context.get('files', [])
-            files_list = ', '.join(files) if files else 'sin archivos'
-            print(f' - Contexto: "{name}", Contenido: Archivos: {files_list}')
+            files_list = ', '.join(files) if files else 'no files'
+            print(f' - Context: "{name}", Content: Files: {files_list}')
     except Exception as e:
-        print(f"Ocurrió un error al listar los contextos: {e}")
-    
+        print(f"An error occurred while listing the contexts: {e}")
 
 
 # -----------------------------------------------------------
-# Funciones de soporte
+# Support functions
 # -----------------------------------------------------------
 
 def get_current_context():
@@ -192,7 +191,7 @@ def get_current_context():
         context_data = load_json_file(current_context_file, default={})
         return context_dir, current_context_file, context_data
     except Exception as e:
-        print(f"Ocurrió un error al obtener el contexto actual: {e}")
+        print(f"An error occurred while getting the current context: {e}")
         return None, None, None
 
 
@@ -202,7 +201,7 @@ def load_json_file(file_path, default):
             with open(file_path, 'r') as json_file:
                 return json.load(json_file)
         except Exception as e:
-            print(f"Error al leer {file_path}: {e}")
+            print(f"Error reading {file_path}: {e}")
     return default
 
 
@@ -211,7 +210,7 @@ def save_json_file(file_path, data):
         with open(file_path, 'w') as json_file:
             json.dump(data, json_file, indent=4)
     except Exception as e:
-        print(f"Error al guardar {file_path}: {e}")
+        print(f"Error saving {file_path}: {e}")
 
 
 def update_all_contexts(all_contexts, current_context):
@@ -226,11 +225,12 @@ def find_or_create_context(all_contexts, new_context_name):
     for context in all_contexts:
         if context.get("name") == new_context_name:
             return context
-    # Si no se encuentra, se crea uno nuevo
-    print(f"No se encontró el contexto '{new_context_name}'. Creando uno nuevo.")
+    # If not found, create a new one
+    print(f"No context found '{new_context_name}'. Creating a new one.")
     new_context = {"name": new_context_name, "files": []}
     all_contexts.append(new_context)
     return new_context
+
 
 # -----------------------------------------------------------
 # Testing
@@ -238,4 +238,4 @@ def find_or_create_context(all_contexts, new_context_name):
 
 if __name__ == "__main__":
     check()
-    #list()
+    # list()

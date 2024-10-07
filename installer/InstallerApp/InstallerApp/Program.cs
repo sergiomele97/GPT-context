@@ -83,7 +83,7 @@
                 }
 
                 Console.WriteLine("Generando ejecutable con PyInstaller...");
-                ActivateAndRunCommand(venvPath, $"pyinstaller --onefile --hidden-import=google.generativeai {scriptPath}");
+                ActivateAndRunCommand(venvPath, $"pyinstaller --onefile --hidden-import=google.generativeai --hidden-import=pyperclip {scriptPath}");
 
                 // Verificar si el archivo ejecutable ha sido creado
                 string exePath = Path.Combine(distDir, "context.exe");
