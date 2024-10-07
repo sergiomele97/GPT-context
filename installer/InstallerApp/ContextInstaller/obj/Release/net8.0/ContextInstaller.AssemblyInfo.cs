@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ContextInstaller")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac12f9e14f42e4425eed828ada3b72e89b3d6100")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef931a9d5102af8e6ac78feed42912c9c97a069e")]
 [assembly: System.Reflection.AssemblyProductAttribute("ContextInstaller")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ContextInstaller")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

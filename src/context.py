@@ -1,5 +1,7 @@
 import argparse
 import os
+import secrets
+
 import summarize
 import directory  # Import the function from the new file
 import file  # Make sure the add() function is in file.py
@@ -32,6 +34,9 @@ def main():
 
     elif args.command == 'init':
         directory.init(os.getcwd())  # Calls the imported function
+
+    elif args.command == 'config':
+        secrets.configure_api_key()  # Calls the imported function
 
     elif args.command == 'add':
         if len(args.args) < 1:
